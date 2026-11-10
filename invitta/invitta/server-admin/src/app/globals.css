@@ -1,0 +1,202 @@
+@import "tailwindcss" source(none);
+@source "../";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ivory: var(--ivory);
+  --color-champagne: var(--champagne);
+  --color-beige: var(--beige);
+  --color-noir: var(--noir);
+  --color-cream: var(--cream);
+  --color-taupe: var(--taupe);
+  --color-stone: var(--stone);
+  --color-collection-copy: var(--collection-copy);
+  --color-collection-light: var(--collection-light);
+  --color-collection-mid: var(--collection-mid);
+  --color-collection-ink: var(--collection-ink);
+  --color-collection-divider: var(--collection-divider);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --shadow-soft: 0 1px 2px oklch(0.2 0.02 60 / 0.03);
+  --shadow-luxe: 0 20px 40px -28px oklch(0.2 0.02 60 / 0.18);
+}
+
+:root {
+  --radius: 0.375rem;
+  --collection-copy: oklch(0.43 0 0);
+  --collection-light: oklch(0.98 0 0);
+  --collection-mid: oklch(0.66 0 0);
+  --collection-ink: oklch(0.24 0 0);
+  --collection-divider: oklch(0.78 0 0);
+
+  /* Luxury wedding palette */
+  --ivory: #F8F6F2;
+  --cream: #EFEAE3;
+  --taupe: #A99B8B;
+  --stone: #77716B;
+  --beige: #EFEAE3;
+  --champagne: #A99B8B;
+  --noir: #292724;
+
+  --background: var(--ivory);
+  --foreground: var(--noir);
+
+  --card: oklch(1 0 0);
+  --card-foreground: var(--noir);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--noir);
+
+  --primary: var(--noir);
+  --primary-foreground: var(--ivory);
+
+  --secondary: var(--beige);
+  --secondary-foreground: var(--noir);
+
+  --muted: #EFEAE3;
+  --muted-foreground: #77716B;
+
+  --accent: var(--champagne);
+  --accent-foreground: var(--noir);
+
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: #DDD2C3;
+  --input: #DDD2C3;
+  --ring: var(--champagne);
+
+  --sidebar: var(--ivory);
+  --sidebar-foreground: var(--noir);
+  --sidebar-primary: var(--noir);
+  --sidebar-primary-foreground: var(--ivory);
+  --sidebar-accent: var(--beige);
+  --sidebar-accent-foreground: var(--noir);
+  --sidebar-border: #DDD2C3;
+  --sidebar-ring: var(--champagne);
+}
+
+.dark {
+  --collection-copy: oklch(0.8 0 0);
+  --collection-ink: oklch(0.96 0 0);
+  --collection-divider: oklch(0.5 0 0);
+  --background: var(--noir);
+  --foreground: var(--ivory);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    letter-spacing: 0.005em;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+
+
+  .gold-divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  .luxe-shadow { box-shadow: var(--shadow-luxe); }
+  .soft-shadow { box-shadow: var(--shadow-soft); }
+
+  @keyframes invitta-fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up { animation: invitta-fade-up 0.8s ease-out both; }
+
+  @keyframes invitta-shimmer {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .animate-shimmer { animation: invitta-shimmer 3s ease-in-out infinite; }
+}
+
+@keyframes invitta-reveal {
+  from { opacity: 0; transform: scale(1.04); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.collection-section {
+  background: var(--collection-light);
+}
+
+.dark .collection-section {
+  background: var(--background);
+}
+
+.collection-section, .collection-section * {
+  letter-spacing: 0;
+}

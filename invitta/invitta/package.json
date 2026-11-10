@@ -1,0 +1,18 @@
+{
+  "name": "invitta",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter server-app --filter server-admin dev",
+    "dev:app": "pnpm --filter server-app dev",
+    "dev:admin": "pnpm --filter server-admin dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "db:generate": "pnpm --filter server-app db:generate",
+    "db:migrate": "pnpm --filter server-app db:migrate",
+    "db:push": "pnpm --filter server-app db:push",
+    "db:studio": "pnpm --filter server-app db:studio",
+    "db:seed": "pnpm --filter server-app db:seed"
+  }
+}

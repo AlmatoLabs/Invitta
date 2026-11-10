@@ -1,0 +1,7 @@
+packages:
+  - server-app
+  - server-admin
+onlyBuiltDependencies:
+  - sharp
+  - esbuild
+  - unrs-resolver
