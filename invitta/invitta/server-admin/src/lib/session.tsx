@@ -61,8 +61,18 @@ export function useAuthActions() {
     onSuccess: setMe,
   });
   const register = useMutation({
-    mutationFn: (b: { name: string; email: string; password: string }) =>
-      api<MeResponse>("/auth/register", { body: b }),
+    /** `modelSlug` (din /register?design=) creează direct invitația pe modelul ales. */
+    mutationFn: async ({ modelSlug, ...b }: { name: string; email: string; password: string; modelSlug?: string }) => {
+      const me = await api<MeResponse>("/auth/register", { body: b });
+      if (!modelSlug) return me;
+      try {
+        await api("/invitations", { body: { modelSlug, content: initialContent(b.name) } });
+        return await api<MeResponse>("/auth/me");
+      } catch {
+        // Contul există deja; modelul se poate alege și din /modele.
+        return me;
+      }
+    },
     onSuccess: setMe,
   });
   const logout = async () => {

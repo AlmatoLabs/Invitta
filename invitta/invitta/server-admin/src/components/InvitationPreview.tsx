@@ -15,7 +15,7 @@ export function InvitationPreview({
 }: Props) {
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-between bg-ivory px-6 py-10 text-center">
-      <div className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground animate-shimmer">
+      <div className="text-xs uppercase tracking-[0.35em] text-muted-foreground animate-shimmer">
         Vă invităm la nunta noastră
       </div>
 
@@ -29,13 +29,13 @@ export function InvitationPreview({
 
       <div className="space-y-2">
         <div className="font-serif text-base text-foreground">{date}</div>
-        <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{location}</div>
+        <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground">{location}</div>
       </div>
 
       {!compact && (
-        <button className="rounded-[4px] border border-noir/60 px-5 py-2 text-[10px] uppercase tracking-[0.25em]">
+        <span className="rounded-[4px] border border-noir/60 px-5 py-2 text-xs uppercase tracking-[0.25em]">
           Confirmă prezența
-        </button>
+        </span>
       )}
     </div>
   );

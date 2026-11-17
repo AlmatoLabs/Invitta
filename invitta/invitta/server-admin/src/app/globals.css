@@ -74,7 +74,7 @@
   --ivory: #F8F6F2;
   --cream: #EFEAE3;
   --taupe: #A99B8B;
-  --stone: #77716B;
+  --stone: #6B655F; /* ≈5,3:1 pe ivory (WCAG 1.4.3) */
   --beige: #EFEAE3;
   --champagne: #A99B8B;
   --noir: #292724;
@@ -94,7 +94,7 @@
   --secondary-foreground: var(--noir);
 
   --muted: #EFEAE3;
-  --muted-foreground: #77716B;
+  --muted-foreground: var(--stone);
 
   --accent: var(--champagne);
   --accent-foreground: var(--noir);
@@ -138,6 +138,11 @@
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 

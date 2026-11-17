@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run dev server",
+			"type": "shell",
+			"command": "npm run dev -- --host 0.0.0.0",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Locate Node",
+			"type": "shell",
+			"command": "where.exe node",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Find Node installation",
+			"type": "shell",
+			"command": "$paths = @('C:\\Program Files','C:\\Program Files (x86)','$env:USERPROFILE\\AppData\\Local'); foreach ($p in $paths) { if (Test-Path $p) { Get-ChildItem -Path $p -Filter node.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 20 -ExpandProperty FullName } }",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}

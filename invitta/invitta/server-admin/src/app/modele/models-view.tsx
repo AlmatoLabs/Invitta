@@ -52,19 +52,12 @@ export function ModelsView() {
               </Link>
               <figcaption className="mt-7 border-b border-collection-divider pb-10">
                 <div className="flex items-baseline justify-between gap-4">
-                  <div className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-3">
-                    <Link
-                      href={`/invitatie/${d.slug}`}
-                      className="font-serif text-[28px] leading-tight text-collection-ink decoration-1 underline-offset-8 group-hover:underline focus-visible:underline"
-                    >
-                      {d.model}
-                    </Link>
-                    <span className="flex shrink-0 gap-1.5" role="img" aria-label="Paletă: alb, gri și negru">
-                      {["bg-collection-light", "bg-collection-mid", "bg-collection-ink"].map((c) => (
-                        <span key={c} className={`h-3.5 w-3.5 rounded-full border border-collection-divider ${c}`} />
-                      ))}
-                    </span>
-                  </div>
+                  <Link
+                    href={`/invitatie/${d.slug}`}
+                    className="min-w-0 font-serif text-[28px] leading-tight text-collection-ink decoration-1 underline-offset-8 group-hover:underline focus-visible:underline"
+                  >
+                    {d.model}
+                  </Link>
                   <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-collection-copy">
                     {["I", "II", "III", "IV"][index]}
                   </span>
@@ -99,7 +92,7 @@ export function ModelsView() {
                       variant="outline"
                       className="h-auto rounded-[4px] border-collection-ink bg-transparent px-6 py-2.5 text-[11px] font-normal uppercase text-collection-ink shadow-none hover:bg-collection-ink hover:text-collection-light"
                     >
-                      <Link href="/register">Alege acest model</Link>
+                      <Link href={`/register?design=${d.slug}`}>Alege acest model</Link>
                     </Button>
                   )}
                 </div>

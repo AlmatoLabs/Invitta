@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getStoredLang, setLanguage, LANG_EVENT, type Lang } from "@/lib/i18n";
 import { useAuthActions, useSession } from "@/lib/session";
-import { User } from "lucide-react";
+import { User, X } from "lucide-react";
 
 const t = { features: "Funcționalități", models: "Modele", pricing: "Prețuri", create: "Creează invitația", profile: "Profilul meu", dashboard: "Panoul meu", language: "Limbă", signIn: "Autentificare", account: "Contul tău" };
 
@@ -31,7 +31,7 @@ export function ProfileMenu() {
   return (
     <div ref={ref} className="relative">
       <Button variant="outline" size="icon" onClick={() => setOpen(!open)} aria-label={t.account} aria-expanded={open}
-        className="h-10 w-10 rounded-full font-serif text-sm shadow-none hover:bg-muted">
+        className="h-11 w-11 md:h-10 md:w-10 rounded-full font-serif text-sm shadow-none hover:bg-muted">
         {initial ? initial : <User size={18} strokeWidth={1.5} aria-hidden />}
       </Button>
       {open && (
@@ -56,7 +56,7 @@ export function ProfileMenu() {
               </div>
             </div>
           )}
-          <p className="mt-4 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{t.language}</p>
+          <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">{t.language}</p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {(["ro", "en"] as Lang[]).map((l) => (
               <Button key={l} variant={lang === l ? "default" : "outline"} onClick={() => setLang(l)}
@@ -78,7 +78,14 @@ export function ProfileMenu() {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const session = useSession();
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+  const navLink = "inline-flex min-h-8 items-center hover:text-foreground transition-colors";
+  const menuLink = "block py-3";
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-ivory/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
@@ -86,34 +93,40 @@ export function SiteHeader() {
           Invitta<span className="text-champagne"> · </span><span className="text-base tracking-[0.3em] uppercase">RSVP</span>
         </Link>
         <nav className="hidden items-center gap-10 text-sm text-muted-foreground md:flex">
-          <Link href="/#features" className="hover:text-foreground transition-colors">{t.features}</Link>
-          <Link href="/modele" className="hover:text-foreground transition-colors">{t.models}</Link>
-          <Link href="/#pricing" className="hover:text-foreground transition-colors">{t.pricing}</Link>
+          <Link href="/#features" className={navLink}>{t.features}</Link>
+          <Link href="/modele" className={navLink}>{t.models}</Link>
+          <Link href="/#pricing" className={navLink}>{t.pricing}</Link>
         </nav>
         <div className="flex items-center gap-3">
           <Button asChild className="hidden sm:inline-flex px-5 shadow-none">
             <Link href="/register">{t.create}</Link>
           </Button>
           <ProfileMenu />
-          <Button variant="outline" size="icon" className="md:hidden h-auto w-auto rounded-full p-2 shadow-none" onClick={() => setOpen(!open)} aria-label="Menu">
-            <div className="space-y-1.5">
-              <span className="block h-px w-5 bg-foreground" />
-              <span className="block h-px w-5 bg-foreground" />
-            </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="md:hidden h-11 w-11 rounded-full shadow-none"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Închide meniul" : "Deschide meniul"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+          >
+            {open ? <X size={18} strokeWidth={1.5} aria-hidden /> : (
+              <span className="space-y-1.5" aria-hidden>
+                <span className="block h-px w-5 bg-foreground" />
+                <span className="block h-px w-5 bg-foreground" />
+              </span>
+            )}
           </Button>
         </div>
       </div>
-      {open && (
-        <div className="md:hidden border-t border-border bg-ivory px-6 py-6 space-y-4 text-sm">
-          <Link href="/#features" onClick={() => setOpen(false)} className="block">{t.features}</Link>
-          <Link href="/modele" onClick={() => setOpen(false)} className="block">{t.models}</Link>
-          <Link href="/#pricing" onClick={() => setOpen(false)} className="block">{t.pricing}</Link>
-          {!session && (
-            <Link href="/login" onClick={() => setOpen(false)} className="block text-muted-foreground">{t.signIn}</Link>
-          )}
-          <Button asChild className="h-11 w-full shadow-none"><Link href="/register" onClick={() => setOpen(false)}>{t.create}</Link></Button>
-        </div>
-      )}
+      {/* Autentificarea rămâne doar în meniul de cont (iconița), ca să nu fie dublată aici. */}
+      <div id="mobile-menu" hidden={!open} className="md:hidden border-t border-border bg-ivory px-6 py-4 text-sm">
+        <Link href="/#features" onClick={() => setOpen(false)} className={menuLink}>{t.features}</Link>
+        <Link href="/modele" onClick={() => setOpen(false)} className={menuLink}>{t.models}</Link>
+        <Link href="/#pricing" onClick={() => setOpen(false)} className={menuLink}>{t.pricing}</Link>
+        <Button asChild className="mt-3 h-11 w-full shadow-none"><Link href="/register" onClick={() => setOpen(false)}>{t.create}</Link></Button>
+      </div>
     </header>
   );
 }
