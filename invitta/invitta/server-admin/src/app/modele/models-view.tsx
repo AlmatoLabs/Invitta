@@ -19,16 +19,16 @@ export function ModelsView() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
 
-      <section className="collection-section mx-auto max-w-[1400px] px-6 pb-16 pt-20 md:pb-20 md:pt-28">
+      <section className="mx-auto max-w-[1400px] px-6 pb-16 pt-20 md:pb-20 md:pt-28">
         <div className="grid gap-x-12 gap-y-6 sm:grid-cols-2 sm:items-end">
           <div>
-            <p className="text-xs uppercase text-collection-copy">Colecția 2026</p>
-            <h1 className="mt-5 font-serif text-4xl leading-tight lg:text-6xl">
+            <p className="eyebrow text-liliac-600">Colecția 2026</p>
+            <h1 className="mt-5 font-serif text-4xl leading-[1.12] text-foreground lg:text-6xl lg:font-light">
               <span className="block">Modele</span>
               <em className="block">pentru fiecare poveste</em>
             </h1>
           </div>
-          <p className="max-w-md text-base leading-relaxed text-collection-copy">
+          <p className="max-w-md text-base text-foreground">
             Deschide demo-ul oricărui model, fără cont. Doar editarea invitației și confirmările au nevoie de autentificare.
           </p>
         </div>
@@ -39,7 +39,7 @@ export function ModelsView() {
               <Link
                 href={`/invitatie/${d.slug}`}
                 aria-label={`Vezi demo-ul ${d.model}`}
-                className="block overflow-hidden rounded-[4px] bg-collection-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-collection-ink"
+                className="block overflow-hidden rounded-[4px] bg-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
               >
                 <img
                   src={IMAGES[d.slug]}
@@ -50,26 +50,26 @@ export function ModelsView() {
                   className={`aspect-[5/4] w-full object-cover ${COLOURED.has(d.slug) ? "" : "grayscale "}transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03] group-focus-within:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none`}
                 />
               </Link>
-              <figcaption className="mt-7 border-b border-collection-divider pb-10">
+              <figcaption className="mt-7 border-b border-border pb-10">
                 <div className="flex items-baseline justify-between gap-4">
                   <Link
                     href={`/invitatie/${d.slug}`}
-                    className="min-w-0 font-serif text-[28px] leading-tight text-collection-ink decoration-1 underline-offset-8 group-hover:underline focus-visible:underline"
+                    className="min-w-0 font-serif text-[28px] leading-tight text-foreground decoration-1 underline-offset-8 transition-colors duration-150 hover:text-liliac-600 group-hover:underline focus-visible:underline"
                   >
                     {d.model}
                   </Link>
-                  <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-collection-copy">
+                  <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-liliac-600">
                     {["I", "II", "III", "IV"][index]}
                   </span>
                 </div>
-                <p className="mt-4 text-xs uppercase text-collection-copy">{d.mood}</p>
-                <p className="mt-3 text-sm text-collection-copy">{d.dateTitle} · {d.venue}</p>
+                <p className="mt-3 text-sm text-muted-foreground">{d.mood}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{d.dateTitle} · {d.venue}</p>
                 <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <Link
                     href={`/invitatie/${d.slug}`}
-                    className="group/demo inline-flex items-center gap-3 text-[11px] uppercase text-collection-ink"
+                    className="group/demo inline-flex min-h-8 items-center gap-3 text-[14px] font-medium text-liliac-600 transition-colors duration-150 hover:text-liliac-700"
                   >
-                    <span className="border-b border-collection-divider pb-1.5 transition-colors group-hover/demo:border-collection-ink">
+                    <span className="border-b border-liliac-600/40 pb-1 transition-colors duration-150 group-hover/demo:border-liliac-700">
                       Vezi demo
                     </span>
                     <span aria-hidden="true" className="transition-transform duration-500 group-hover/demo:translate-x-1">→</span>
@@ -82,7 +82,7 @@ export function ModelsView() {
                       onClick={() =>
                         choose.mutate(d.slug, { onSuccess: () => router.push("/dashboard/invitatie") })
                       }
-                      className="h-auto rounded-[4px] border-collection-ink bg-transparent px-6 py-2.5 text-[11px] font-normal uppercase text-collection-ink shadow-none hover:bg-collection-ink hover:text-collection-light"
+                      className="h-auto min-h-11 rounded-[4px] border-liliac-600 bg-transparent px-6 py-2.5 text-[14px] font-medium text-liliac-700 shadow-none hover:border-primary-hover hover:bg-primary-hover hover:text-white"
                     >
                       Alege acest model
                     </Button>
@@ -90,7 +90,7 @@ export function ModelsView() {
                     <Button
                       asChild
                       variant="outline"
-                      className="h-auto rounded-[4px] border-collection-ink bg-transparent px-6 py-2.5 text-[11px] font-normal uppercase text-collection-ink shadow-none hover:bg-collection-ink hover:text-collection-light"
+                      className="h-auto min-h-11 rounded-[4px] border-liliac-600 bg-transparent px-6 py-2.5 text-[14px] font-medium text-liliac-700 shadow-none hover:border-primary-hover hover:bg-primary-hover hover:text-white"
                     >
                       <Link href={`/register?design=${d.slug}`}>Alege acest model</Link>
                     </Button>
@@ -101,13 +101,13 @@ export function ModelsView() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-collection-divider pt-10">
-          <p className="text-sm text-collection-copy">Nu știi ce ți se potrivește? Vezi pachetele și prețurile.</p>
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-border pt-10">
+          <p className="text-base text-foreground">Nu știi ce ți se potrivește? Vezi pachetele și prețurile.</p>
           <div className="flex flex-wrap items-center gap-4">
-            <Button asChild className="h-auto rounded-[4px] px-6 py-3 text-[11px] font-normal uppercase shadow-none">
+            <Button asChild className="h-auto rounded-[4px] px-6 py-3 text-[14px] font-medium shadow-none">
               <Link href="/#pricing">Prețuri</Link>
             </Button>
-            <Link href="/" className="text-[11px] uppercase text-collection-ink underline decoration-collection-divider underline-offset-8 hover:decoration-collection-ink">
+            <Link href="/" className="inline-flex min-h-8 items-center text-[14px] font-medium text-liliac-600 underline decoration-liliac-600/40 underline-offset-8 transition-colors duration-150 hover:text-liliac-700 hover:decoration-liliac-700">
               Înapoi acasă
             </Link>
           </div>

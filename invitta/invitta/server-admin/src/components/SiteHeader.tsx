@@ -31,42 +31,42 @@ export function ProfileMenu() {
   return (
     <div ref={ref} className="relative">
       <Button variant="outline" size="icon" onClick={() => setOpen(!open)} aria-label={t.account} aria-expanded={open}
-        className="h-11 w-11 md:h-10 md:w-10 rounded-full font-serif text-sm shadow-none hover:bg-muted">
+        className="h-11 w-11 md:h-10 md:w-10 rounded-full font-serif text-base shadow-none">
         {initial ? initial : <User size={18} strokeWidth={1.5} aria-hidden />}
       </Button>
       {open && (
         <div className="absolute right-0 mt-3 w-60 rounded-[6px] border border-border bg-background p-4 shadow-lg">
           {session ? (
             <>
-              <p className="font-serif text-lg">{session.name || "Invitta"}</p>
+              <p className="text-base font-medium">{session.name || "Invitta"}</p>
               <p className="text-xs text-muted-foreground">{session.email}</p>
               <div className="mt-4 space-y-2 border-t border-border pt-3 text-sm">
-                <Link href="/dashboard/invitatii" onClick={() => setOpen(false)} className="block hover:text-muted-foreground">Invitațiile mele</Link>
-                <Link href="/dashboard/profil" onClick={() => setOpen(false)} className="block hover:text-muted-foreground">{t.profile}</Link>
-                <Link href="/dashboard/facturi" onClick={() => setOpen(false)} className="block hover:text-muted-foreground">Facturile mele</Link>
+                <Link href="/dashboard/invitatii" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">Invitațiile mele</Link>
+                <Link href="/dashboard/profil" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">{t.profile}</Link>
+                <Link href="/dashboard/facturi" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">Facturile mele</Link>
               </div>
             </>
           ) : (
             <div className="space-y-2 text-sm">
-              <p className="font-serif text-lg">Bine ai venit</p>
+              <p className="text-base font-medium">Bine ai venit</p>
               <p className="text-xs text-muted-foreground">Vezi modelele și demo-urile fără cont.</p>
               <div className="mt-4 space-y-2 border-t border-border pt-3">
-                <Link href="/modele" onClick={() => setOpen(false)} className="block hover:text-muted-foreground">Modele</Link>
+                <Link href="/modele" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">Modele</Link>
                 <Button asChild className="mt-2 w-full shadow-none"><Link href="/login" onClick={() => setOpen(false)}><User size={16} strokeWidth={1.5} aria-hidden />{t.signIn}</Link></Button>
               </div>
             </div>
           )}
-          <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">{t.language}</p>
+          <p className="mt-4 text-xs font-medium text-muted-foreground">{t.language}</p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {(["ro", "en"] as Lang[]).map((l) => (
               <Button key={l} variant={lang === l ? "default" : "outline"} onClick={() => setLang(l)}
-                className={`shadow-none ${lang === l ? "border border-foreground" : "hover:bg-muted"}`}>
+                className="shadow-none">
                 <span data-no-translate>{l === "ro" ? "Română" : "English"}</span>
               </Button>
             ))}
           </div>
           {session && (
-            <Button variant="ghost" onClick={() => { setOpen(false); logout(); }} className="mt-4 h-auto w-full justify-start rounded-none border-t border-border px-0 pt-3 text-left font-normal hover:bg-transparent hover:text-muted-foreground">
+            <Button variant="ghost" onClick={() => { setOpen(false); logout(); }} className="mt-4 h-auto w-full justify-start rounded-none border-t border-border px-0 pt-3 text-left font-normal hover:bg-transparent hover:text-liliac-600">
               Deconectare
             </Button>
           )}
@@ -84,13 +84,13 @@ export function SiteHeader() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
-  const navLink = "inline-flex min-h-8 items-center hover:text-foreground transition-colors";
-  const menuLink = "block py-3";
+  const navLink = "inline-flex min-h-8 items-center transition-colors duration-150 hover:text-liliac-600";
+  const menuLink = "block py-3 text-muted-foreground transition-colors duration-150 hover:text-liliac-600";
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-ivory/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="font-serif text-2xl tracking-tight">
-          Invitta<span className="text-champagne"> · </span><span className="text-base tracking-[0.3em] uppercase">RSVP</span>
+          Invitta<span className="text-liliac-600"> · </span><span className="text-base tracking-[0.3em] uppercase">RSVP</span>
         </Link>
         <nav className="hidden items-center gap-10 text-sm text-muted-foreground md:flex">
           <Link href="/#features" className={navLink}>{t.features}</Link>
@@ -121,7 +121,7 @@ export function SiteHeader() {
         </div>
       </div>
       {/* Autentificarea rămâne doar în meniul de cont (iconița), ca să nu fie dublată aici. */}
-      <div id="mobile-menu" hidden={!open} className="md:hidden border-t border-border bg-ivory px-6 py-4 text-sm">
+      <div id="mobile-menu" hidden={!open} className="md:hidden border-t border-border bg-background px-6 py-4 text-sm">
         <Link href="/#features" onClick={() => setOpen(false)} className={menuLink}>{t.features}</Link>
         <Link href="/modele" onClick={() => setOpen(false)} className={menuLink}>{t.models}</Link>
         <Link href="/#pricing" onClick={() => setOpen(false)} className={menuLink}>{t.pricing}</Link>

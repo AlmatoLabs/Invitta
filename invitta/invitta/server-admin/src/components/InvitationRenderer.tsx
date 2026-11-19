@@ -38,7 +38,7 @@ export function InvitationRenderer({
   const has = (k: string) => enabled.some((s) => s.key === k);
 
   return (
-    <div className="min-h-screen" style={{ background: WOOD, color: "#f7f3ea" }}>
+    <div className="tpl-scope min-h-screen" style={{ background: WOOD, color: "#f7f3ea" }}>
       <TopNav data={data} has={has} showClose={!slug} />
 
       <div className="scroll-smooth">
@@ -53,13 +53,13 @@ export function InvitationRenderer({
 function TopNav({ data, has, showClose }: { data: Data; has: (k: string) => boolean; showClose: boolean }) {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 py-5 flex items-center justify-between">
-      <div className="text-ivory">
+      <div className="text-tpl-ivory">
         <div className="font-serif text-lg sm:text-xl">{data.navTitle || "Nunta noastră"}</div>
         <div className="italic text-xs opacity-80 mt-0.5" style={{ fontFamily: SCRIPT_FONT, fontSize: 14 }}>
           {data.dateLabel || ""}
         </div>
       </div>
-      <nav className="hidden sm:flex items-center gap-10 text-sm tracking-wide text-ivory">
+      <nav className="hidden sm:flex items-center gap-10 text-sm tracking-wide text-tpl-ivory">
         {has("story") && <a href="#ce" className="hover:opacity-70 transition">Ce?</a>}
         {(has("countdown") || has("hero")) && <a href="#cand" className="hover:opacity-70 transition">Când?</a>}
         {(has("civil") || has("religious") || has("party")) && (
@@ -71,7 +71,7 @@ function TopNav({ data, has, showClose }: { data: Data; has: (k: string) => bool
       <Link
         href="/dashboard/invitatie"
         title="Înapoi la editor"
-        className="h-8 w-8 rounded-full flex items-center justify-center text-ivory/80 hover:text-ivory transition text-lg"
+        className="h-8 w-8 rounded-full flex items-center justify-center text-tpl-ivory/80 hover:text-tpl-ivory transition text-lg"
       >
         ✕
       </Link>
@@ -126,7 +126,7 @@ function HeroSection({ data }: { data: Data }) {
 
   return (
     <section id="ce" className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center text-center px-6" style={{ background: WOOD }}>
-      <div className="relative z-10 text-ivory animate-fade-in pt-24 pb-16">
+      <div className="relative z-10 text-tpl-ivory animate-fade-in pt-24 pb-16">
         <p className="text-[11px] uppercase tracking-[0.4em] opacity-80">{data.heroIntro}</p>
 
         <h1
@@ -188,7 +188,7 @@ function CountdownSection({ data }: { data: Data }) {
   return (
     <section id="cand" className="px-6 py-24" style={{ background: WOOD }}>
       <div className="mx-auto max-w-3xl">
-        <div className="text-center text-ivory">
+        <div className="text-center text-tpl-ivory">
           <p className="italic opacity-90" style={{ fontFamily: SCRIPT_FONT, fontSize: 40 }}>
             our wedding
           </p>
@@ -205,7 +205,7 @@ function CountdownSection({ data }: { data: Data }) {
               { v: secs, l: "Secunde" },
             ].map((b) => (
               <div key={b.l} className="text-center">
-                <div className="font-serif text-4xl sm:text-5xl text-ivory">{b.v}</div>
+                <div className="font-serif text-4xl sm:text-5xl text-tpl-ivory">{b.v}</div>
                 <div className="mt-1 text-xs uppercase tracking-[0.2em] opacity-70">{b.l}</div>
               </div>
             ))}
@@ -222,7 +222,7 @@ function CoupleSection({ data }: { data: Data }) {
   if (!data.brideFirst && !data.groomFirst) return null;
   return (
     <section className="px-6 py-20" style={{ background: WOOD }}>
-      <div className="mx-auto max-w-3xl grid sm:grid-cols-2 gap-10 text-center text-ivory">
+      <div className="mx-auto max-w-3xl grid sm:grid-cols-2 gap-10 text-center text-tpl-ivory">
         <div>
           <p className="text-[10px] uppercase tracking-[0.4em] opacity-70">Mireasă</p>
           <h3 className="mt-3 text-5xl" style={{ fontFamily: SCRIPT_FONT }}>{data.brideFirst}</h3>
@@ -242,7 +242,7 @@ function ParentsSection({ data }: { data: Data }) {
   if (!data.parentsNames && !data.godparentsNames) return null;
   return (
     <section className="px-6 py-20" style={{ background: WOOD }}>
-      <div className="mx-auto max-w-2xl text-center space-y-12 text-ivory">
+      <div className="mx-auto max-w-2xl text-center space-y-12 text-tpl-ivory">
         {data.parentsNames && (
           <div>
             <p className="italic opacity-90" style={{ fontFamily: SCRIPT_FONT, fontSize: 26 }}>
@@ -301,7 +301,7 @@ function EventDetailsSection({ data, places }: { data: Data; places: string[] })
           Când și unde
         </p>
 
-        <div className="mx-auto mt-10 max-w-2xl space-y-4 font-serif text-base leading-relaxed text-foreground/80">
+        <div className="mx-auto mt-10 max-w-2xl space-y-4 font-serif text-base leading-relaxed text-tpl-noir/80">
           {civil.venue && (
             <p>
               Cununia civilă va avea loc la <strong>{civil.venue}</strong>
@@ -353,7 +353,7 @@ function StorySection({ data }: { data: Data }) {
     <section className="px-6 py-24" style={{ background: "#efe9df", color: "#2b2b2b" }}>
       <div className="mx-auto max-w-3xl text-center">
         <h3 className="text-5xl" style={{ fontFamily: SCRIPT_FONT }}>{data.storyTitle || "Povestea noastră"}</h3>
-        <div className="gold-divider mx-auto my-8 w-16" />
+        <div className="h-px bg-tpl-border mx-auto my-8 w-16" />
         <p className="font-serif text-lg leading-relaxed whitespace-pre-line opacity-80">{data.storyText}</p>
         {data.youtubeId && (
           <div className="mt-12 aspect-video w-full overflow-hidden rounded-md pointer-events-none">
@@ -377,7 +377,7 @@ function ThanksSection({ data }: { data: Data }) {
     <section className="px-6 py-24" style={{ background: WOOD, color: "#f7f3ea" }}>
       <div className="mx-auto max-w-2xl text-center">
         <h3 className="text-6xl" style={{ fontFamily: SCRIPT_FONT }}>{data.thanksTitle || "Cu drag"}</h3>
-        <div className="gold-divider mx-auto my-8 w-16" />
+        <div className="h-px bg-tpl-border mx-auto my-8 w-16" />
         <p className="font-serif text-xl leading-relaxed opacity-90">{data.thanksText}</p>
       </div>
     </section>
@@ -393,7 +393,7 @@ function RsvpSection({ data, slug }: { data: Data; slug?: string }) {
   const [error, setError] = useState("");
 
   const field =
-    "w-full rounded-[4px] px-5 py-3.5 text-sm bg-transparent border border-white/30 text-ivory placeholder:text-ivory/60 outline-none focus:border-white/70";
+    "w-full rounded-[4px] px-5 py-3.5 text-sm bg-transparent border border-white/30 text-tpl-ivory placeholder:text-tpl-ivory/60 outline-none focus:border-white/70";
   const label = "text-center text-sm font-medium mb-2";
 
   const send = async (attend: boolean) => {
@@ -453,7 +453,7 @@ function RsvpSection({ data, slug }: { data: Data; slug?: string }) {
                   {live ? (
                     <select value={form.people} onChange={(e) => setForm({ ...form, people: e.target.value })} className={field}>
                       {[1, 2, 3, 4, 5, 6].map((n) => (
-                        <option key={n} value={n} className="bg-noir">{n}</option>
+                        <option key={n} value={n} className="bg-tpl-noir">{n}</option>
                       ))}
                     </select>
                   ) : (
@@ -466,9 +466,9 @@ function RsvpSection({ data, slug }: { data: Data; slug?: string }) {
                   <div className={label}>Tip meniu</div>
                   {live ? (
                     <select value={form.menu} onChange={(e) => setForm({ ...form, menu: e.target.value })} className={field}>
-                      <option value="standard" className="bg-noir">Standard</option>
-                      <option value="vegetarian" className="bg-noir">Vegetarian</option>
-                      <option value="vegan" className="bg-noir">Vegan</option>
+                      <option value="standard" className="bg-tpl-noir">Standard</option>
+                      <option value="vegetarian" className="bg-tpl-noir">Vegetarian</option>
+                      <option value="vegan" className="bg-tpl-noir">Vegan</option>
                     </select>
                   ) : (
                     <div className={field}>Alege tip meniu ⌄</div>

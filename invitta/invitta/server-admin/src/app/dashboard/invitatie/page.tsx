@@ -24,7 +24,7 @@ import { useInvitation } from "@/lib/queries";
 import { useSession } from "@/lib/session";
 
 const input =
-  "w-full rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none focus:border-champagne transition-colors placeholder:text-muted-foreground/60";
+  "w-full rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 transition-colors placeholder:text-muted-foreground";
 
 export default function Builder() {
   const session = useSession();
@@ -92,22 +92,22 @@ export default function Builder() {
   };
 
   if (!hydrated) {
-    return <p className="px-6 py-24 text-center text-xs uppercase tracking-[0.35em] text-muted-foreground">Se încarcă…</p>;
+    return <p className="px-6 py-24 text-center text-sm text-muted-foreground">Se încarcă…</p>;
   }
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Editor</p>
+          <p className="eyebrow text-liliac-600">Editor</p>
           <h1 className="mt-2 font-serif text-4xl">Invitația voastră</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Personalizați fiecare detaliu. Modificările sunt salvate automat.</p>
+          <p className="mt-2 text-base text-foreground">Personalizați fiecare detaliu. Modificările sunt salvate automat.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button
             variant="outline"
             onClick={() => setShareOpen(true)}
-            className="h-auto rounded-full border-foreground bg-foreground/0 px-6 py-3 shadow-none hover:bg-foreground hover:text-background"
+            className="h-auto rounded-full border-liliac-600 bg-transparent px-6 py-3 text-liliac-700 shadow-none hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700"
           >
             Trimite invitația
           </Button>
@@ -115,12 +115,12 @@ export default function Builder() {
             href="/invitatie/preview"
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-border bg-card px-6 py-3 text-sm hover:border-champagne transition inline-flex items-center gap-2"
+            className="rounded-full border border-border bg-card px-6 py-3 text-sm transition-colors duration-150 hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700 inline-flex items-center gap-2"
           >
             <span>Previzualizare</span>
-            <span className="text-champagne">↗</span>
+            <span className="text-liliac-600">↗</span>
           </a>
-          <Button onClick={save} className="h-auto rounded-[4px] px-6 py-3 shadow-none hover:opacity-90">
+          <Button onClick={save} className="h-auto rounded-[4px] px-6 py-3 shadow-none">
             {saved ? "✓ Salvat" : saveMutation.isPending ? "Se salvează…" : "Salvează"}
           </Button>
         </div>
@@ -139,7 +139,7 @@ export default function Builder() {
             <TabsTrigger
               key={t.id}
               value={t.id}
-              className="rounded-xl px-4 py-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground data-[state=active]:bg-ivory data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+              className="rounded-xl px-4 py-2 text-xs sm:text-sm text-muted-foreground transition-colors duration-150 hover:text-liliac-700 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
             >
               {t.label}
             </TabsTrigger>
@@ -160,10 +160,10 @@ export default function Builder() {
             href="/invitatie/preview"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground transition"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-liliac-600"
           >
             Deschide previzualizarea într-o pagină nouă
-            <span className="text-champagne">↗</span>
+            <span className="text-liliac-600">↗</span>
           </a>
         </div>
       </div>
@@ -185,9 +185,9 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="w-full sm:max-w-lg rounded-2xl bg-background p-6 sm:p-8">
-        <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Distribuie</p>
+        <p className="eyebrow text-liliac-600">Distribuie</p>
         <DialogTitle className="mt-2 font-serif text-3xl font-normal">Trimite invitația</DialogTitle>
-        <DialogDescription className="mt-2 text-sm text-muted-foreground">
+        <DialogDescription className="mt-2 text-base text-foreground">
           Copiază linkul și trimite-l invitaților. Oricine îl deschide vede invitația.
         </DialogDescription>
         <Input readOnly value={link || "Se generează linkul…"} onFocus={(e) => e.target.select()} className={`${input} mt-6 font-mono text-xs`} />
@@ -195,7 +195,7 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
           <Button disabled={!link} onClick={copy} className="h-auto rounded-[4px] px-4 py-3 shadow-none">
             {copied ? "✓ Copiat" : "Copiază linkul"}
           </Button>
-          <Button asChild variant="outline" className="h-auto rounded-[4px] px-4 py-3 shadow-none hover:border-foreground">
+          <Button asChild variant="outline" className="h-auto rounded-[4px] px-4 py-3 shadow-none">
             <a
               href={link ? `https://wa.me/?text=${encodeURIComponent(link)}` : undefined}
               target="_blank"
@@ -204,7 +204,7 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
               WhatsApp
             </a>
           </Button>
-          <Button asChild variant="outline" className="h-auto rounded-[4px] px-4 py-3 shadow-none hover:border-foreground">
+          <Button asChild variant="outline" className="h-auto rounded-[4px] px-4 py-3 shadow-none">
             <a href={link || undefined} target="_blank" rel="noreferrer">
               Deschide
             </a>
@@ -213,7 +213,7 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
         <p className="mt-4 text-xs text-muted-foreground">
           Linkul arată mereu versiunea salvată a invitației, iar confirmările invitaților ajung în secțiunea RSVP.
         </p>
-        <Button variant="ghost" onClick={onClose} className="mt-6 w-full text-xs uppercase tracking-[0.3em] text-muted-foreground hover:bg-transparent hover:text-foreground">
+        <Button variant="ghost" onClick={onClose} className="mt-6 w-full text-sm text-muted-foreground hover:bg-transparent hover:text-liliac-600">
           Închide
         </Button>
       </DialogContent>
@@ -234,10 +234,10 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
           className="h-auto w-full justify-between whitespace-normal rounded-none px-6 py-5 text-left font-normal hover:bg-transparent"
         >
           <div>
-            <h3 className="font-serif text-xl">{title}</h3>
+            <h3 className="font-serif text-2xl">{title}</h3>
             {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
           </div>
-          <span className={`text-champagne transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
+          <span className={`text-liliac-600 transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="px-6 pb-6 space-y-5 border-t border-border pt-5">{children}</CollapsibleContent>
@@ -262,7 +262,7 @@ function Field({
   else body = children;
   return (
     <div>
-      <Label htmlFor={id} className="text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+      <Label htmlFor={id} className="text-xs font-medium text-muted-foreground flex items-center gap-2">
         {label}
         {hint && <span className="opacity-50" title={hint}>ⓘ</span>}
       </Label>
@@ -361,7 +361,7 @@ function InfoTab({ data, set }: { data: Data; set: <K extends keyof Data>(k: K, 
                 key={c.id}
                 onClick={() => set("theme", c.id)}
                 className={`h-12 w-12 rounded-full border-2 overflow-hidden transition-all ${
-                  data.theme === c.id ? "border-champagne scale-110" : "border-border"
+                  data.theme === c.id ? "border-liliac-600 scale-110" : "border-border"
                 }`}
               >
                 <div className="h-full w-full grid grid-cols-2">
@@ -526,13 +526,13 @@ function CustomTab({ data, set }: { data: Data; set: <K extends keyof Data>(k: K
       </Card>
 
       <Card title="Galerie foto">
-        <Button variant="outline" className="h-auto w-full rounded-md border-dashed bg-secondary/30 p-8 font-normal text-muted-foreground shadow-none hover:border-champagne hover:bg-secondary/30 hover:text-foreground">
+        <Button variant="outline" className="h-auto w-full rounded-md border-dashed bg-secondary/30 p-8 font-normal text-muted-foreground shadow-none hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700">
           + Adaugă fotografii
         </Button>
       </Card>
 
       <Card title="Muzică de fundal">
-        <Button variant="outline" className="h-auto w-full rounded-md border-dashed bg-secondary/30 p-6 font-normal text-muted-foreground shadow-none hover:border-champagne hover:bg-secondary/30 hover:text-foreground">
+        <Button variant="outline" className="h-auto w-full rounded-md border-dashed bg-secondary/30 p-6 font-normal text-muted-foreground shadow-none hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700">
           ♫  Alege o melodie
         </Button>
       </Card>
@@ -545,7 +545,7 @@ function Toggle({ label, value, onChange }: { label: string; value: boolean; onC
   return (
     <div className="w-full flex items-center justify-between py-2">
       <Label htmlFor={id} className="text-sm font-normal cursor-pointer">{label}</Label>
-      <Switch id={id} checked={value} onCheckedChange={onChange} className="data-[state=checked]:bg-noir data-[state=unchecked]:bg-border" />
+      <Switch id={id} checked={value} onCheckedChange={onChange} className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-border" />
     </div>
   );
 }
@@ -565,11 +565,11 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
 
   return (
     <div className="rounded-md border border-dashed border-border bg-secondary/20 p-4">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-noir">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-liliac-900">
         {value ? (
           <img src={value} alt="" className="h-full w-full object-cover" />
         ) : (
-          <div className="h-full w-full grid place-items-center text-ivory/40 text-sm">Fără imagine</div>
+          <div className="h-full w-full grid place-items-center text-liliac-100 text-sm">Fără imagine</div>
         )}
       </div>
 
@@ -580,7 +580,7 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
           variant={tab === "gallery" ? "default" : "secondary"}
           onClick={() => setTab("gallery")}
           className={`h-auto rounded-[4px] px-4 py-2 shadow-none ${
-            tab === "gallery" ? "bg-noir text-ivory hover:bg-noir" : "text-foreground"
+            tab === "gallery" ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "text-foreground"
           }`}
         >
           🖼  Galerie
@@ -591,7 +591,7 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
           variant={tab === "upload" ? "default" : "secondary"}
           onClick={() => { setTab("upload"); fileRef.current?.click(); }}
           className={`h-auto rounded-[4px] px-4 py-2 shadow-none ${
-            tab === "upload" ? "bg-noir text-ivory hover:bg-noir" : "text-foreground"
+            tab === "upload" ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "text-foreground"
           }`}
         >
           ↑  Încarcă poză
@@ -619,7 +619,7 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
               type="button"
               onClick={() => onChange(src)}
               className={`relative aspect-square overflow-hidden rounded-lg border-2 transition ${
-                value === src ? "border-champagne" : "border-transparent hover:border-border"
+                value === src ? "border-liliac-600" : "border-transparent hover:border-border"
               }`}
             >
               <img src={src} alt="" className="h-full w-full object-cover" />
@@ -627,7 +627,7 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
           ))}
         </div>
       )}
-      <p className="mt-3 text-[10px] text-muted-foreground">
+      <p className="mt-3 text-xs text-muted-foreground">
         * Prin încărcarea pozelor, confirmi că imaginile îți aparțin și nu încalcă restricții de drept de autor.
       </p>
     </div>
@@ -656,12 +656,12 @@ function SectionsTab({ sections, onChange }: { sections: Section[]; onChange: (s
         {sections.map((s, i) => (
           <li
             key={s.key}
-            className={`flex items-center gap-3 rounded-md border border-border bg-ivory px-4 py-3 transition ${
+            className={`flex items-center gap-3 rounded-md border border-border bg-background px-4 py-3 transition ${
               s.enabled ? "" : "opacity-50"
             }`}
           >
             <span className="text-muted-foreground cursor-grab select-none">⋮⋮</span>
-            <span className="font-serif text-lg flex-1">{s.label}</span>
+            <span className="flex-1 text-base font-medium">{s.label}</span>
             <div className="flex items-center gap-1">
               <Button
                 variant="outline"
@@ -684,7 +684,7 @@ function SectionsTab({ sections, onChange }: { sections: Section[]; onChange: (s
                 variant={s.enabled ? "default" : "secondary"}
                 onClick={() => toggle(i)}
                 className={`ml-2 h-auto rounded-[4px] px-3 py-1 shadow-none ${
-                  s.enabled ? "bg-noir text-ivory hover:bg-noir" : "text-muted-foreground"
+                  s.enabled ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "text-muted-foreground"
                 }`}
               >
                 {s.enabled ? "Activă" : "Ascunsă"}

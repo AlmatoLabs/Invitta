@@ -21,6 +21,17 @@ const TABLE_COLORS = [
   "#C9A876", "#7A8B5C", "#B89E8A", "#8FA1B3", "#A77C7C", "#9B8AA8", "#6E7F6A", "#2A2A2A",
 ];
 
+/** Culoarea mesei e aleasă de miri → alegem textul (ink / paper) cu contrastul mai bun. */
+function readableOn(hex: string): string {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return "var(--paper)";
+  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const n = parseInt(m[1], 16);
+  const L = 0.2126 * lin(((n >> 16) & 255) / 255) + 0.7152 * lin(((n >> 8) & 255) / 255) + 0.0722 * lin((n & 255) / 255);
+  // L(ink #2E2230) ≈ 0.019, L(paper #FBF8F9) ≈ 0.944
+  return (L + 0.05) / (0.019 + 0.05) >= (0.944 + 0.05) / (L + 0.05) ? "var(--ink)" : "var(--paper)";
+}
+
 const SHAPES: { id: Shape; label: string }[] = [
   { id: "round", label: "Rotundă" },
   { id: "rect", label: "Dreptung." },
@@ -113,8 +124,8 @@ export default function Tables() {
   return (
     <div className="min-h-[calc(100vh-80px)] flex flex-col">
       {/* Header */}
-      <div className="border-b border-border bg-ivory/90 backdrop-blur-xl px-4 sm:px-8 py-5">
-        <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">
+      <div className="border-b border-border bg-background/90 backdrop-blur-xl px-4 sm:px-8 py-5">
+        <p className="eyebrow text-liliac-600">
           {subtitle}
         </p>
         <h1 className="mt-2 font-serif text-3xl sm:text-4xl">Așezarea la mese</h1>
@@ -130,8 +141,8 @@ export default function Tables() {
         <ToolbarButton icon="↗">Export</ToolbarButton>
         <ToolbarButton icon="◉">3D</ToolbarButton>
         <ToolbarButton icon="?">Ajutor</ToolbarButton>
-        <div className="ml-auto flex items-center gap-2 text-xs text-champagne">
-          <span className="h-2 w-2 rounded-full bg-champagne" /> Salvat automat
+        <div className="ml-auto flex items-center gap-2 text-xs text-liliac-600">
+          <span className="h-2 w-2 rounded-full bg-liliac" aria-hidden="true" /> Salvat automat
         </div>
       </div>
 
@@ -148,7 +159,7 @@ export default function Tables() {
               <Input
                 value={search} onChange={(e) => setSearch(e.target.value)}
                 placeholder="Caută invitat..."
-                className="h-auto w-full rounded-xl border-border bg-ivory pl-9 pr-4 py-2.5 text-sm focus-visible:border-champagne"
+                className="h-auto w-full rounded-xl border-border bg-background pl-9 pr-4 py-2.5 text-sm focus-visible:border-ring"
               />
             </div>
           </div>
@@ -158,14 +169,14 @@ export default function Tables() {
             onDrop={onDropPool}
             className="flex-1 overflow-y-auto px-3 py-4"
           >
-            <p className="px-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-3">
+            <p className="px-2 text-xs font-medium text-muted-foreground mb-3">
               Neasignați ({visibleGroups.reduce((a, g) => a + g.members.filter((m) => !assigned.has(m.id)).length, 0)})
             </p>
 
             <div className="space-y-4">
               {visibleGroups.map((g) => (
                 <div key={g.id}>
-                  <p className="px-3 py-1 text-[11px] uppercase tracking-wider text-muted-foreground/70 border-b border-border/60 mb-1">
+                  <p className="px-3 py-1 text-xs font-medium text-muted-foreground border-b border-border/60 mb-1">
                     {g.name}
                   </p>
                   {g.members.map((m) => {
@@ -176,13 +187,13 @@ export default function Tables() {
                         draggable={!isAssigned}
                         onDragStart={() => !isAssigned && onDragStart(m.id, "pool")}
                         className={`mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition ${
-                          isAssigned ? "opacity-40 line-through" : "cursor-grab bg-secondary/40 hover:bg-champagne/15"
+                          isAssigned ? "opacity-40 line-through" : "cursor-grab bg-transparent hover:bg-liliac-50"
                         }`}
                       >
                         <span className="h-2 w-2 rounded-full border border-muted-foreground/40" />
                         <span className="flex-1 truncate">{m.name}</span>
                         {m.isPartner && (
-                          <Badge variant="secondary" className="text-[9px] font-normal uppercase tracking-wider text-muted-foreground bg-ivory hover:bg-ivory rounded-[4px] px-2 py-0.5 border-0">
+                          <Badge variant="secondary" className="text-xs font-normal text-muted-foreground bg-background hover:bg-background rounded-[4px] px-2 py-0.5 border-0">
                             partener
                           </Badge>
                         )}
@@ -196,12 +207,12 @@ export default function Tables() {
         </aside>
 
         {/* Canvas */}
-        <main className="relative bg-[oklch(0.97_0.008_80)] overflow-auto">
+        <main className="relative bg-paper overflow-auto">
           <div
             className="min-h-full p-8"
             style={{
               backgroundImage:
-                "radial-gradient(circle, oklch(0.85 0.012 75) 1px, transparent 1px)",
+                "radial-gradient(circle, var(--line) 1px, transparent 1px)",
               backgroundSize: "24px 24px",
             }}
           >
@@ -231,10 +242,10 @@ export default function Tables() {
           </div>
 
           {/* Footer stats + zoom */}
-          <div className="sticky bottom-0 flex items-center justify-between gap-4 border-t border-border bg-ivory/95 backdrop-blur-xl px-6 py-3">
+          <div className="sticky bottom-0 flex items-center justify-between gap-4 border-t border-border bg-background/95 backdrop-blur-xl px-6 py-3">
             <p className="text-xs text-muted-foreground">
-              <span className="font-serif text-base text-foreground">{totalAssigned}</span> / {totalSeats} locuri ocupate ·{" "}
-              <span className="font-serif text-base text-foreground">{tables.length}</span> mese
+              <span className="text-base font-medium text-foreground">{totalAssigned}</span> / {totalSeats} locuri ocupate ·{" "}
+              <span className="text-base font-medium text-foreground">{tables.length}</span> mese
             </p>
             <div className="flex items-center gap-1">
               <ZoomBtn onClick={() => setZoom(Math.max(50, zoom - 10))}>−</ZoomBtn>
@@ -251,15 +262,15 @@ export default function Tables() {
 
 function ToolbarButton({ icon, children }: { icon: string; children: React.ReactNode }) {
   return (
-    <Button variant="secondary" size="sm" className="rounded-full bg-secondary/50 hover:bg-secondary px-4 py-2 h-auto text-xs font-normal text-foreground shadow-none">
-      <span className="text-champagne">{icon}</span> {children}
+    <Button variant="secondary" size="sm" className="rounded-full px-4 py-2 h-auto text-xs font-normal shadow-none">
+      <span className="text-liliac-600">{icon}</span> {children}
     </Button>
   );
 }
 
 function ZoomBtn({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
-    <Button variant="outline" size="icon" onClick={onClick} className="h-8 w-8 rounded-full border-border bg-transparent shadow-none hover:bg-secondary text-sm font-normal">
+    <Button variant="outline" size="icon" onClick={onClick} className="h-8 w-8 rounded-full border-border bg-transparent shadow-none text-sm font-normal">
       {children}
     </Button>
   );
@@ -302,34 +313,34 @@ function TableShape({
   }, [table.shape, table.seats]);
 
   const shapeBox = () => {
-    const base = "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-ivory font-serif transition-all";
-    const style = { background: table.color };
+    const base = "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center font-medium transition-all";
+    const style = { background: table.color, color: readableOn(table.color) };
     switch (table.shape) {
       case "round":
         return <div className={`${base} h-32 w-32 rounded-full`} style={style}>
           <span className="text-sm">{table.name}</span>
-          <span className="text-xs opacity-80">{table.guests.length}/{table.seats}</span>
+          <span className="text-xs">{table.guests.length}/{table.seats}</span>
         </div>;
       case "oval":
         return <div className={`${base} h-28 w-48 rounded-[50%]`} style={style}>
           <span className="text-sm">{table.name}</span>
-          <span className="text-xs opacity-80">{table.guests.length}/{table.seats}</span>
+          <span className="text-xs">{table.guests.length}/{table.seats}</span>
         </div>;
       case "square":
         return <div className={`${base} h-28 w-28 rounded-md`} style={style}>
           <span className="text-sm">{table.name}</span>
-          <span className="text-xs opacity-80">{table.guests.length}/{table.seats}</span>
+          <span className="text-xs">{table.guests.length}/{table.seats}</span>
         </div>;
       case "presidium":
         return <div className={`${base} h-20 w-72 rounded-md`} style={style}>
           <span className="text-sm">{table.name} · Prezidiu</span>
-          <span className="text-xs opacity-80">{table.guests.length}/{table.seats}</span>
+          <span className="text-xs">{table.guests.length}/{table.seats}</span>
         </div>;
       case "rect":
       default:
         return <div className={`${base} h-24 w-56 rounded-md`} style={style}>
           <span className="text-sm">{table.name}</span>
-          <span className="text-xs opacity-80">{table.guests.length}/{table.seats}</span>
+          <span className="text-xs">{table.guests.length}/{table.seats}</span>
         </div>;
     }
   };
@@ -340,7 +351,7 @@ function TableShape({
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
       className={`group relative h-[300px] w-[300px] rounded-md transition-all ${
-        selected ? "ring-2 ring-champagne ring-offset-2 ring-offset-[oklch(0.97_0.008_80)]" : ""
+        selected ? "bg-liliac-50 ring-2 ring-liliac-600 ring-offset-2 ring-offset-paper" : ""
       }`}
     >
       <div className="absolute inset-0">
@@ -358,13 +369,13 @@ function TableShape({
                 <div
                   draggable
                   onDragStart={() => onDragGuest(guest.id)}
-                  className="cursor-grab rounded-md bg-ivory border border-border px-2 py-1 text-[10px] whitespace-nowrap max-w-[100px] truncate luxe-shadow"
+                  className="cursor-grab rounded-md bg-card border border-border px-2 py-1 text-xs whitespace-nowrap max-w-[112px] truncate luxe-shadow"
                   title={guest.name}
                 >
                   {guest.name}
                 </div>
               ) : (
-                <div className="h-6 w-6 rounded border border-dashed border-muted-foreground/40 bg-ivory/60" />
+                <div className="h-6 w-6 rounded border border-dashed border-muted-foreground/40 bg-card/60" />
               )}
             </div>
           );
@@ -373,17 +384,17 @@ function TableShape({
 
       {/* Controls */}
       {selected && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-[4px] bg-noir text-ivory px-2 py-1 text-xs">
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(Math.max(1, table.seats - 1)); }} className="h-6 w-6 hover:bg-ivory/10 hover:text-ivory rounded-full">−</Button>
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-[4px] bg-primary text-primary-foreground px-2 py-1 text-xs">
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(Math.max(1, table.seats - 1)); }} className="h-6 w-6 hover:bg-primary-foreground/10 hover:text-primary-foreground rounded-full">−</Button>
           <span className="px-1 tabular-nums">{table.seats}</span>
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(table.seats + 1); }} className="h-6 w-6 hover:bg-ivory/10 hover:text-ivory rounded-full">＋</Button>
-          <Separator orientation="vertical" className="mx-1 h-3 bg-ivory/30" />
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onRemove(); }} className="h-6 w-6 hover:bg-destructive hover:text-ivory rounded-full">🗑</Button>
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(table.seats + 1); }} className="h-6 w-6 hover:bg-primary-foreground/10 hover:text-primary-foreground rounded-full">＋</Button>
+          <Separator orientation="vertical" className="mx-1 h-3 bg-primary-foreground/30" />
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onRemove(); }} className="h-6 w-6 hover:bg-destructive hover:text-destructive-foreground rounded-full">🗑</Button>
         </div>
       )}
 
       {free > 0 && (
-        <div className="absolute bottom-2 right-2 text-[10px] uppercase tracking-wider text-champagne">
+        <div className="absolute bottom-2 right-2 text-xs font-medium text-liliac-600">
           {free} libere
         </div>
       )}
@@ -414,37 +425,37 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="rounded-[4px] bg-noir text-ivory hover:bg-noir hover:opacity-90 px-4 py-2 h-auto text-xs font-normal shadow-none">
-          <span className="text-champagne">＋</span> Masă nouă
+        <Button size="sm" className="rounded-[4px] bg-primary text-primary-foreground hover:bg-primary-hover px-4 py-2 h-auto text-xs font-normal shadow-none">
+          <span className="text-liliac-100">＋</span> Masă nouă
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-ivory border-border max-w-md">
+      <DialogContent className="bg-background border-border max-w-md">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">Masă nouă</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5 mt-2">
           <div>
-            <Label htmlFor="table-name" className="text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground">Nume masă *</Label>
+            <Label htmlFor="table-name" className="text-xs font-medium text-muted-foreground">Nume masă *</Label>
             <Input id="table-name" value={name} onChange={(e) => setName(e.target.value)}
-              className="mt-2 h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-champagne" />
+              className="mt-2 h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-ring" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="table-seats" className="text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground">Capacitate *</Label>
+              <Label htmlFor="table-seats" className="text-xs font-medium text-muted-foreground">Capacitate *</Label>
               <Input id="table-seats" type="number" min={1} max={30} value={seats}
                 onChange={(e) => setSeats(Number(e.target.value))}
-                className="mt-2 h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-champagne" />
+                className="mt-2 h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-ring" />
             </div>
             <div>
-              <Label className="text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground">Culoare</Label>
+              <Label className="text-xs font-medium text-muted-foreground">Culoare</Label>
               <div className="mt-2 flex flex-wrap gap-2">
                 {TABLE_COLORS.map((c) => (
                   <Button
                     key={c} type="button" variant="ghost" size="icon" onClick={() => setColor(c)}
                     aria-label={c}
-                    className={`h-7 w-7 rounded-full border-2 transition hover:opacity-90 ${color === c ? "border-noir scale-110" : "border-transparent"}`}
+                    className={`h-7 w-7 rounded-full border-2 transition-transform duration-150 hover:scale-110 ${color === c ? "border-ink scale-110" : "border-transparent"}`}
                     style={{ background: c }}
                   />
                 ))}
@@ -453,25 +464,25 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
           </div>
 
           <div>
-            <Label className="text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground">Formă</Label>
+            <Label className="text-xs font-medium text-muted-foreground">Formă</Label>
             <div className="mt-2 grid grid-cols-5 gap-2">
               {SHAPES.map((s) => (
                 <Button key={s.id} type="button" variant="outline" onClick={() => setShape(s.id)}
                   className={`flex h-auto flex-col items-center gap-2 rounded-xl border-2 p-3 shadow-none transition ${
-                    shape === s.id ? "border-champagne bg-champagne/10 hover:bg-champagne/10" : "border-border bg-transparent hover:bg-transparent hover:border-muted-foreground/40"
+                    shape === s.id ? "border-liliac-600 bg-liliac-50 hover:bg-liliac-50" : "border-border bg-transparent hover:bg-transparent hover:border-muted-foreground/40"
                   }`}>
                   <ShapeIcon shape={s.id} />
-                  <span className="text-[10px] font-normal text-muted-foreground">{s.label}</span>
+                  <span className="text-xs font-normal text-muted-foreground">{s.label}</span>
                 </Button>
               ))}
             </div>
           </div>
 
           <div>
-            <Label htmlFor="table-notes" className="text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground">Note (opțional)</Label>
+            <Label htmlFor="table-notes" className="text-xs font-medium text-muted-foreground">Note (opțional)</Label>
             <Textarea id="table-notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)}
               placeholder="Note despre această masă..."
-              className="mt-2 w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-champagne resize-none" />
+              className="mt-2 w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-ring resize-none" />
           </div>
         </div>
 
@@ -479,7 +490,7 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
           <Button variant="secondary" onClick={() => setOpen(false)} className="rounded-full px-5 py-2.5 h-auto shadow-none">
             Anulează
           </Button>
-          <Button onClick={submit} className="rounded-[4px] bg-noir text-ivory px-6 py-2.5 h-auto hover:bg-noir hover:opacity-90 shadow-none">
+          <Button onClick={submit} className="rounded-[4px] bg-primary text-primary-foreground px-6 py-2.5 h-auto hover:bg-primary-hover shadow-none">
             Salvează
           </Button>
         </DialogFooter>
@@ -489,7 +500,7 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
 }
 
 function ShapeIcon({ shape }: { shape: Shape }) {
-  const cls = "border-2 border-noir/50";
+  const cls = "border-2 border-ink/50";
   switch (shape) {
     case "round": return <div className={`${cls} h-6 w-6 rounded-full`} />;
     case "rect": return <div className={`${cls} h-4 w-8 rounded`} />;

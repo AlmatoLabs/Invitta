@@ -12,13 +12,13 @@ export default function Invoices() {
   const { data: invoices, isPending } = useInvoices();
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Contul tău</p>
+      <p className="eyebrow text-liliac-600">Contul tău</p>
       <h1 className="mt-3 font-serif text-5xl">Facturile mele</h1>
       <div className="mt-12 border-t border-border">
         {invoices?.map((i) => (
           <div key={i.id} className="flex flex-wrap items-center justify-between gap-4 border-b border-border py-6">
             <div>
-              <p className="font-serif text-xl">{i.plan}</p>
+              <p className="font-serif text-[22px]">{i.plan}</p>
               <p className="text-xs text-muted-foreground"><span data-no-translate>{i.number}</span> · {fmtDate(i.issuedAt)}</p>
             </div>
             <div className="flex items-center gap-6">

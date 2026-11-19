@@ -42,10 +42,10 @@ function InvitationNav({ monogram, dark }: { monogram: string; dark: boolean }) 
   }, []);
 
   const solidBar = dark
-    ? "border-ivory/10 bg-noir/95 backdrop-blur-md"
-    : "border-collection-divider bg-ivory/95 backdrop-blur-md";
-  const inkIdle = dark ? "text-ivory/60 hover:text-ivory" : "text-stone hover:text-noir";
-  const inkActive = dark ? "text-ivory" : "text-noir";
+    ? "border-tpl-ivory/10 bg-tpl-noir/95 backdrop-blur-md"
+    : "border-collection-divider bg-tpl-ivory/95 backdrop-blur-md";
+  const inkIdle = dark ? "text-tpl-ivory/60 hover:text-tpl-ivory" : "text-tpl-stone hover:text-tpl-noir";
+  const inkActive = dark ? "text-tpl-ivory" : "text-tpl-noir";
 
   return (
     <header
@@ -58,7 +58,7 @@ function InvitationNav({ monogram, dark }: { monogram: string; dark: boolean }) 
           href={backTo}
           aria-label="Înapoi"
           className={`shrink-0 flex items-center gap-1.5 py-2 text-[10px] uppercase tracking-[0.22em] transition-colors sm:py-3 sm:text-[11px] sm:tracking-[0.28em] ${
-            solid ? inkIdle : "text-ivory/70 hover:text-ivory"
+            solid ? inkIdle : "text-tpl-ivory/70 hover:text-tpl-ivory"
           }`}
         >
           ← Înapoi
@@ -66,7 +66,7 @@ function InvitationNav({ monogram, dark }: { monogram: string; dark: boolean }) 
         <a
           href="#top"
           className={`hidden shrink-0 font-serif text-lg tracking-[0.25em] transition-colors sm:block ${
-            solid ? (dark ? "text-ivory" : "text-noir") : "text-ivory"
+            solid ? (dark ? "text-tpl-ivory" : "text-tpl-noir") : "text-tpl-ivory"
           }`}
         >
           {monogram}
@@ -82,8 +82,8 @@ function InvitationNav({ monogram, dark }: { monogram: string; dark: boolean }) 
                 ? inkActive
                 : inkIdle
               : isActive
-                ? "text-ivory"
-                : "text-ivory/70 hover:text-ivory";
+                ? "text-tpl-ivory"
+                : "text-tpl-ivory/70 hover:text-tpl-ivory";
             return (
               <a
                 key={s.id}
@@ -129,20 +129,20 @@ export function DemoInvitation({ slug }: { slug: string }) {
     setSent(true);
   };
 
-  const muted = demo.dark ? "text-ivory/60" : "text-muted-foreground";
-  const body = demo.dark ? "text-ivory/80" : "text-foreground/80";
+  const muted = demo.dark ? "text-tpl-ivory/60" : "text-tpl-stone";
+  const body = demo.dark ? "text-tpl-ivory/80" : "text-tpl-noir/80";
   const mapLink = demo.dark
-    ? "border-ivory/30 hover:bg-ivory/10"
-    : "border-noir/30 hover:bg-secondary";
-  const programBg = demo.dark ? "bg-ivory/5" : "bg-secondary/40";
-  const rsvpBg = demo.dark ? "bg-ivory/5" : "bg-noir";
+    ? "border-tpl-ivory/30 hover:bg-tpl-ivory/10"
+    : "border-tpl-noir/30 hover:bg-tpl-cream";
+  const programBg = demo.dark ? "bg-tpl-ivory/5" : "bg-tpl-cream/40";
+  const rsvpBg = demo.dark ? "bg-tpl-ivory/5" : "bg-tpl-noir";
 
   return (
-    <div id="top" className={`min-h-screen ${demo.dark ? "bg-noir text-ivory" : "bg-ivory text-foreground"}`}>
+    <div id="top" className={`tpl-scope min-h-screen ${demo.dark ? "bg-tpl-noir text-tpl-ivory" : "bg-tpl-ivory text-tpl-noir"}`}>
       <InvitationNav monogram={demo.monogram} dark={demo.dark} />
 
       {/* HERO */}
-      <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-noir">
+      <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-tpl-noir">
         <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-6">
           <p className="text-xs uppercase tracking-[0.4em] animate-shimmer">Vă invităm la nunta noastră</p>
           <div className="my-10 space-y-2 animate-fade-up">
@@ -158,7 +158,7 @@ export function DemoInvitation({ slug }: { slug: string }) {
       </section>
 
       {/* COUNTDOWN */}
-      <section className="bg-noir text-ivory py-20 text-center">
+      <section className="bg-tpl-noir text-tpl-ivory py-20 text-center">
         <p className={`text-xs uppercase tracking-[0.35em] ${demo.accentText}`}>Numărătoare inversă</p>
         <div className="mt-10 flex justify-center gap-6 sm:gap-12">
           {[
@@ -166,7 +166,7 @@ export function DemoInvitation({ slug }: { slug: string }) {
           ].map((x) => (
             <div key={x.l} className="text-center">
               <div className="font-serif text-5xl sm:text-6xl tabular-nums">{x.v.toString().padStart(2, "0")}</div>
-              <div className="mt-2 text-[10px] uppercase tracking-[0.3em] text-ivory/60">{x.l}</div>
+              <div className="mt-2 text-[10px] uppercase tracking-[0.3em] text-tpl-ivory/60">{x.l}</div>
             </div>
           ))}
         </div>
@@ -176,7 +176,7 @@ export function DemoInvitation({ slug }: { slug: string }) {
       <section id="povestea" className="mx-auto max-w-2xl scroll-mt-24 px-6 py-24 text-center">
         <p className={`text-xs uppercase tracking-[0.35em] ${muted}`}>Povestea noastră</p>
         <h2 className="mt-4 font-serif text-4xl sm:text-5xl italic">{demo.storyTitle}</h2>
-        <div className={`mt-6 mx-auto gold-divider w-16`} />
+        <div className={`mt-6 mx-auto h-px bg-tpl-border w-16`} />
         <p className={`mt-10 font-serif text-xl leading-relaxed ${body}`}>
           {demo.story}
         </p>
@@ -208,7 +208,7 @@ export function DemoInvitation({ slug }: { slug: string }) {
         <p className={`text-xs uppercase tracking-[0.35em] ${muted}`}>Locația</p>
         <h2 className="mt-4 font-serif text-4xl sm:text-5xl">{demo.venue}</h2>
         <p className={`mt-3 ${muted}`}>{demo.venueArea}</p>
-        <div className={`mt-10 overflow-hidden rounded-md soft-shadow aspect-[16/9] ${demo.dark ? "bg-noir" : "bg-secondary"}`}>
+        <div className={`mt-10 overflow-hidden rounded-md soft-shadow aspect-[16/9] ${demo.dark ? "bg-tpl-noir" : "bg-tpl-cream"}`}>
           <iframe
             title="Hartă"
             src={`https://www.openstreetmap.org/export/embed.html?bbox=${demo.mapBbox}&layer=mapnik`}
@@ -222,35 +222,35 @@ export function DemoInvitation({ slug }: { slug: string }) {
       </section>
 
       {/* RSVP */}
-      <section id="confirmare" className={`${rsvpBg} scroll-mt-24 text-ivory py-24`}>
+      <section id="confirmare" className={`${rsvpBg} scroll-mt-24 text-tpl-ivory py-24`}>
         <div className="mx-auto max-w-md px-6">
           <p className={`text-xs uppercase tracking-[0.35em] ${demo.accentText} text-center`}>Confirmare</p>
           <h2 className="mt-4 font-serif text-4xl text-center">Vino alături de noi</h2>
-          <p className="mt-3 text-center text-ivory/60 text-sm">{`Te rugăm să confirmi până la ${demo.rsvpUntil}.`}</p>
+          <p className="mt-3 text-center text-tpl-ivory/60 text-sm">{`Te rugăm să confirmi până la ${demo.rsvpUntil}.`}</p>
 
           {sent ? (
-            <div className="mt-12 text-center py-12 border border-champagne/30 rounded-md">
+            <div className="mt-12 text-center py-12 border border-tpl-champagne/30 rounded-md">
               <div className={`font-serif text-5xl ${demo.accentText}`}>♡</div>
               <p className="mt-4 font-serif text-2xl">Mulțumim!</p>
-              <p className="mt-2 text-sm text-ivory/60">Confirmarea ta a fost trimisă cu drag.</p>
+              <p className="mt-2 text-sm text-tpl-ivory/60">Confirmarea ta a fost trimisă cu drag.</p>
             </div>
           ) : (
             <form onSubmit={submit} className="mt-12 space-y-7">
               <div>
-                <label className="text-[10px] uppercase tracking-[0.3em] text-ivory/60">Nume</label>
+                <label className="text-[10px] uppercase tracking-[0.3em] text-tpl-ivory/60">Nume</label>
                 <input
                   required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="mt-2 w-full border-0 border-b border-ivory/30 bg-transparent py-3 text-ivory outline-none focus:border-champagne"
+                  className="mt-2 w-full border-0 border-b border-tpl-ivory/30 bg-transparent py-3 text-tpl-ivory outline-none focus:border-tpl-champagne"
                 />
               </div>
               <div>
-                <label className="text-[10px] uppercase tracking-[0.3em] text-ivory/60 block mb-3">Vei participa?</label>
+                <label className="text-[10px] uppercase tracking-[0.3em] text-tpl-ivory/60 block mb-3">Vei participa?</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[{ v: "da", l: "Particip cu drag" }, { v: "nu", l: "Nu pot ajunge" }].map((o) => (
                     <button
                       type="button" key={o.v}
                       onClick={() => setForm({ ...form, attend: o.v })}
-                      className={`rounded-full border px-4 py-3 text-sm transition-all ${form.attend === o.v ? "border-champagne bg-champagne/10" : "border-ivory/20"}`}
+                      className={`rounded-full border px-4 py-3 text-sm transition-all ${form.attend === o.v ? "border-tpl-champagne bg-tpl-champagne/10" : "border-tpl-ivory/20"}`}
                     >
                       {o.l}
                     </button>
@@ -260,33 +260,33 @@ export function DemoInvitation({ slug }: { slug: string }) {
               {form.attend === "da" && (
                 <>
                   <div>
-                    <label className="text-[10px] uppercase tracking-[0.3em] text-ivory/60">Număr persoane</label>
+                    <label className="text-[10px] uppercase tracking-[0.3em] text-tpl-ivory/60">Număr persoane</label>
                     <input
                       type="number" min={1} max={5} value={form.people} onChange={(e) => setForm({ ...form, people: e.target.value })}
-                      className="mt-2 w-full border-0 border-b border-ivory/30 bg-transparent py-3 text-ivory outline-none focus:border-champagne"
+                      className="mt-2 w-full border-0 border-b border-tpl-ivory/30 bg-transparent py-3 text-tpl-ivory outline-none focus:border-tpl-champagne"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-[0.3em] text-ivory/60">Preferințe meniu</label>
+                    <label className="text-[10px] uppercase tracking-[0.3em] text-tpl-ivory/60">Preferințe meniu</label>
                     <select
                       value={form.menu} onChange={(e) => setForm({ ...form, menu: e.target.value })}
-                      className="mt-2 w-full border-0 border-b border-ivory/30 bg-transparent py-3 text-ivory outline-none focus:border-champagne"
+                      className="mt-2 w-full border-0 border-b border-tpl-ivory/30 bg-transparent py-3 text-tpl-ivory outline-none focus:border-tpl-champagne"
                     >
-                      <option className="bg-noir" value="standard">Standard</option>
-                      <option className="bg-noir" value="vegetarian">Vegetarian</option>
-                      <option className="bg-noir" value="vegan">Vegan</option>
+                      <option className="bg-tpl-noir" value="standard">Standard</option>
+                      <option className="bg-tpl-noir" value="vegetarian">Vegetarian</option>
+                      <option className="bg-tpl-noir" value="vegan">Vegan</option>
                     </select>
                   </div>
                 </>
               )}
               <div>
-                <label className="text-[10px] uppercase tracking-[0.3em] text-ivory/60">Mesaj pentru miri (opțional)</label>
+                <label className="text-[10px] uppercase tracking-[0.3em] text-tpl-ivory/60">Mesaj pentru miri (opțional)</label>
                 <textarea
                   rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="mt-2 w-full border-0 border-b border-ivory/30 bg-transparent py-3 text-ivory outline-none focus:border-champagne resize-none"
+                  className="mt-2 w-full border-0 border-b border-tpl-ivory/30 bg-transparent py-3 text-tpl-ivory outline-none focus:border-tpl-champagne resize-none"
                 />
               </div>
-              <button type="submit" className="mt-4 w-full rounded-[4px] bg-ivory text-noir px-6 py-4 text-sm tracking-wider hover:bg-champagne transition-colors">
+              <button type="submit" className="mt-4 w-full rounded-[4px] bg-tpl-ivory text-tpl-noir px-6 py-4 text-sm tracking-wider hover:bg-tpl-champagne transition-colors">
                 Trimite confirmarea
               </button>
             </form>

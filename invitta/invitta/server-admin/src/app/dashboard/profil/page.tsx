@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { api } from "@/lib/api";
 import { useSession, useUpdateProfile } from "@/lib/session";
 
-const label = "text-xs uppercase tracking-[0.2em] text-muted-foreground";
+const label = "text-xs font-medium text-muted-foreground";
 
 export default function Profile() {
   const session = useSession();
@@ -50,7 +50,7 @@ export default function Profile() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
-      <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Contul tău</p>
+      <p className="eyebrow text-liliac-600">Contul tău</p>
       <h1 className="mt-3 font-serif text-5xl">Profilul meu</h1>
 
       <form onSubmit={save} className="mt-12 space-y-6">

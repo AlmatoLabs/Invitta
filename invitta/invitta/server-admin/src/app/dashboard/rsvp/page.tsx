@@ -17,9 +17,9 @@ const statusLabel: Record<RsvpStatus, string> = {
   refuzat: "Refuzat",
 };
 const statusClass: Record<RsvpStatus, string> = {
-  confirmat: "bg-champagne/20 text-foreground",
-  asteptare: "bg-secondary text-muted-foreground",
-  refuzat: "bg-destructive/10 text-destructive",
+  confirmat: "bg-success-bg text-success",
+  asteptare: "bg-warning-bg text-warning",
+  refuzat: "bg-danger-bg text-destructive",
 };
 
 const csvCell = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
@@ -83,14 +83,14 @@ export default function RsvpPage() {
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Confirmări</p>
+          <p className="eyebrow text-liliac-600">Confirmări</p>
           <h1 className="mt-2 font-serif text-4xl">Invitații voștri</h1>
         </div>
         <div className="flex gap-3">
           <Button onClick={() => setAdding((a) => !a)} className="rounded-[4px] px-5 py-2.5 h-auto">
             {adding ? "Închide" : "Adaugă invitat"}
           </Button>
-          <Button variant="outline" onClick={exportCsv} className="rounded-full bg-card px-5 py-2.5 h-auto hover:bg-secondary">
+          <Button variant="outline" onClick={exportCsv} className="rounded-full bg-card px-5 py-2.5 h-auto">
             Exportă lista
           </Button>
         </div>
@@ -105,7 +105,7 @@ export default function RsvpPage() {
           placeholder="Caută invitat..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-[200px] h-auto rounded-full border-border bg-card px-5 py-3 text-sm focus-visible:border-champagne"
+          className="flex-1 min-w-[200px] h-auto rounded-full border-border bg-card px-5 py-3 text-sm focus-visible:border-ring"
         />
         <div className="flex gap-2 flex-wrap">
           {(["toti", "confirmat", "asteptare", "refuzat"] as const).map((f) => (
@@ -113,7 +113,7 @@ export default function RsvpPage() {
               key={f}
               variant={filter === f ? "default" : "outline"}
               onClick={() => setFilter(f)}
-              className={`rounded-[4px] px-4 py-2 h-auto shadow-none ${filter === f ? "bg-noir text-ivory hover:bg-noir" : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-card"}`}
+              className={`rounded-[4px] px-4 py-2 h-auto shadow-none ${filter === f ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "bg-card border-border text-muted-foreground hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700"}`}
             >
               {f === "toti" ? "Toți" : statusLabel[f]}
             </Button>
@@ -123,7 +123,7 @@ export default function RsvpPage() {
 
       <div className="overflow-x-auto rounded-md border border-border bg-card">
         <Table className="w-full text-sm">
-          <TableHeader className="bg-secondary/50 text-xs uppercase tracking-[0.15em] text-muted-foreground">
+          <TableHeader className="bg-secondary/50 text-xs font-medium text-muted-foreground">
             <TableRow>
               <TableHead className="text-left font-normal px-6 py-4 h-auto">Nume</TableHead>
               <TableHead className="text-left font-normal px-6 py-4 h-auto">Status</TableHead>
@@ -137,7 +137,7 @@ export default function RsvpPage() {
             {visible.map((g) => (
               <TableRow key={g.id} className="border-t border-border hover:bg-secondary/30 transition-colors">
                 <TableCell className="px-6 py-5">
-                  <span className="font-serif text-lg">{g.name}</span>
+                  <span className="text-base font-medium">{g.name}</span>
                   {g.message && <p className="mt-1 max-w-xs text-xs text-muted-foreground">„{g.message}”</p>}
                 </TableCell>
                 <TableCell className="px-6 py-5">
@@ -202,15 +202,15 @@ function AddGuestForm({ invitationId, onDone }: { invitationId: string; onDone: 
     e.preventDefault();
     add.mutate();
   };
-  const field = "h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-champagne";
+  const field = "h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm focus-visible:border-ring";
   return (
     <form onSubmit={submit} className="mb-8 grid gap-4 rounded-md border border-border bg-card p-6 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
       <div>
-        <Label htmlFor="guest-name" className="text-xs font-normal uppercase tracking-[0.2em] text-muted-foreground">Nume invitat sau familie</Label>
+        <Label htmlFor="guest-name" className="text-xs font-medium text-muted-foreground">Nume invitat sau familie</Label>
         <Input id="guest-name" required value={name} onChange={(e) => setName(e.target.value)} className={`${field} mt-2`} />
       </div>
       <div>
-        <Label htmlFor="guest-partner" className="text-xs font-normal uppercase tracking-[0.2em] text-muted-foreground">Partener (opțional)</Label>
+        <Label htmlFor="guest-partner" className="text-xs font-medium text-muted-foreground">Partener (opțional)</Label>
         <Input id="guest-partner" value={partner} onChange={(e) => setPartner(e.target.value)} className={`${field} mt-2`} />
       </div>
       <Button type="submit" disabled={add.isPending} className="rounded-[4px] px-6 py-3 h-auto">

@@ -4,6 +4,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Type scale for the app UI (non-inline so utilities read the CSS variables
+   and .tpl-scope can restore the original sizes for invitation templates).
+   Minimums: labels 13px (text-xs), secondary text 15px (text-sm), body 16px. */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.6;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6;
+}
+
 @theme inline {
   --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
   --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
@@ -24,6 +36,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-destructive-hover: var(--destructive-hover);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -36,17 +50,54 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-ivory: var(--ivory);
-  --color-champagne: var(--champagne);
-  --color-beige: var(--beige);
-  --color-noir: var(--noir);
-  --color-cream: var(--cream);
-  --color-taupe: var(--taupe);
-  --color-stone: var(--stone);
-  --color-collection-copy: var(--collection-copy);
-  --color-collection-light: var(--collection-light);
-  --color-collection-mid: var(--collection-mid);
-  --color-collection-ink: var(--collection-ink);
+  /* Brand palette (FOGRA39 → sRGB) */
+  --color-liliac-50: var(--liliac-50);
+  --color-liliac-100: var(--liliac-100);
+  --color-liliac: var(--liliac);
+  --color-liliac-600: var(--liliac-600);
+  --color-liliac-700: var(--liliac-700);
+  --color-liliac-900: var(--liliac-900);
+  --color-maple-50: var(--maple-50);
+  --color-maple-100: var(--maple-100);
+  --color-maple: var(--maple);
+  --color-maple-700: var(--maple-700);
+  --color-maple-900: var(--maple-900);
+  --color-cobalt-50: var(--cobalt-50);
+  --color-cobalt-100: var(--cobalt-100);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-700: var(--cobalt-700);
+  --color-cobalt-900: var(--cobalt-900);
+  --color-eugenia-50: var(--eugenia-50);
+  --color-eugenia-100: var(--eugenia-100);
+  --color-eugenia: var(--eugenia);
+  --color-eugenia-600: var(--eugenia-600);
+  --color-eugenia-900: var(--eugenia-900);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-line: var(--line);
+
+  /* RSVP status + charts */
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger-bg: var(--danger-bg);
+  --color-chart-accepted: var(--chart-accepted);
+  --color-chart-pending: var(--chart-pending);
+  --color-chart-declined: var(--chart-declined);
+
+  /* Invitation templates (see :root) */
+  --color-tpl-ivory: var(--tpl-ivory);
+  --color-tpl-cream: var(--tpl-cream);
+  --color-tpl-beige: var(--tpl-beige);
+  --color-tpl-taupe: var(--tpl-taupe);
+  --color-tpl-champagne: var(--tpl-champagne);
+  --color-tpl-stone: var(--tpl-stone);
+  --color-tpl-noir: var(--tpl-noir);
+  --color-tpl-border: var(--tpl-border);
+
+  /* Only remaining --collection-* token: used by the template nav in demo-view. */
   --color-collection-divider: var(--collection-divider);
 
   --color-sidebar: var(--sidebar);
@@ -58,70 +109,113 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --shadow-soft: 0 1px 2px oklch(0.2 0.02 60 / 0.03);
-  --shadow-luxe: 0 20px 40px -28px oklch(0.2 0.02 60 / 0.18);
+  --shadow-soft: 0 1px 2px rgb(46 34 48 / 0.04);
+  --shadow-luxe: 0 20px 40px -28px rgb(46 34 48 / 0.2);
 }
 
 :root {
   --radius: 0.375rem;
-  --collection-copy: oklch(0.43 0 0);
-  --collection-light: oklch(0.98 0 0);
-  --collection-mid: oklch(0.66 0 0);
-  --collection-ink: oklch(0.24 0 0);
   --collection-divider: oklch(0.78 0 0);
 
-  /* Luxury wedding palette */
-  --ivory: #F8F6F2;
-  --cream: #EFEAE3;
-  --taupe: #A99B8B;
-  --stone: #6B655F; /* ≈5,3:1 pe ivory (WCAG 1.4.3) */
-  --beige: #EFEAE3;
-  --champagne: #A99B8B;
-  --noir: #292724;
+  /* Brand palette — 4 brand colours converted from CMYK (FOGRA39).
+     The mid tones (liliac, maple, cobalt, eugenia) are decorative only
+     (lines, dots, illustrations, large fills). Never use them for text:
+     use the 600/700/900 shades instead. */
+  --liliac-50: #F6EEF4;
+  --liliac-100: #EAD7E5;
+  --liliac: #C18BB4;
+  --liliac-600: #7F4D73;
+  --liliac-700: #653E5C;
+  --liliac-900: #422E3D;
+  --maple-50: #F9F4EC;
+  --maple-100: #F0E4D1;
+  --maple: #CFAA71;
+  --maple-700: #725831;
+  --maple-900: #493C27;
+  --cobalt-50: #EEF6EF;
+  --cobalt-100: #D6EBD9;
+  --cobalt: #A5D2AC;
+  --cobalt-700: #3C6743;
+  --cobalt-900: #2D4330;
+  --eugenia-50: #FBEAE9;
+  --eugenia-100: #F5CCCB;
+  --eugenia: #E15E5C;
+  --eugenia-600: #9E2F2E;
+  --eugenia-900: #4F2221;
+  --paper: #FBF8F9;
+  --ink: #2E2230;
+  --ink-secondary: #5C4F5A; /* 7.3:1 on paper — metadata only */
+  --line: #E8E0E6;
 
-  --background: var(--ivory);
-  --foreground: var(--noir);
+  /* Invitation templates — deliberately separate from the app theme.
+     Template components (demo-view, InvitationRenderer, InvitationPreview,
+     PhoneMockup, lib/demos) use ONLY --tpl-* / --collection-*, never the
+     shadcn tokens, so restyling the app can never change how an invitation
+     looks. Values = the original "luxury wedding" palette. */
+  --tpl-ivory: #F8F6F2;
+  --tpl-cream: #EFEAE3;
+  --tpl-beige: #EFEAE3;
+  --tpl-taupe: #A99B8B;
+  --tpl-champagne: #A99B8B;
+  --tpl-stone: #6B655F;
+  --tpl-noir: #292724;
+  --tpl-border: #DDD2C3;
 
-  --card: oklch(1 0 0);
-  --card-foreground: var(--noir);
-  --popover: oklch(1 0 0);
-  --popover-foreground: var(--noir);
+  --background: var(--paper);
+  --foreground: var(--ink);
 
-  --primary: var(--noir);
-  --primary-foreground: var(--ivory);
+  --card: #FFFFFF;
+  --card-foreground: var(--ink);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--ink);
 
-  --secondary: var(--beige);
-  --secondary-foreground: var(--noir);
+  /* --liliac-900 is reserved for dark bands (e.g. "Momentul vostru", Premium card). */
+  --primary: var(--liliac-600);
+  --primary-foreground: #FFFFFF;
+  --primary-hover: var(--liliac-700);
 
-  --muted: #EFEAE3;
-  --muted-foreground: var(--stone);
+  --secondary: var(--liliac-50);
+  --secondary-foreground: var(--liliac-900);
 
-  --accent: var(--champagne);
-  --accent-foreground: var(--noir);
+  --muted: var(--liliac-50);
+  --muted-foreground: var(--ink-secondary);
 
-  --destructive: oklch(0.55 0.18 25);
-  --destructive-foreground: oklch(0.99 0 0);
+  --accent: var(--liliac-100);
+  --accent-foreground: var(--liliac-900);
 
-  --border: #DDD2C3;
-  --input: #DDD2C3;
-  --ring: var(--champagne);
+  --destructive: var(--eugenia-600);
+  --destructive-foreground: #FFFFFF;
+  --destructive-hover: #842726; /* eugenia-600 darkened ~15%: hover without opacity, not near-black */
 
-  --sidebar: var(--ivory);
-  --sidebar-foreground: var(--noir);
-  --sidebar-primary: var(--noir);
-  --sidebar-primary-foreground: var(--ivory);
-  --sidebar-accent: var(--beige);
-  --sidebar-accent-foreground: var(--noir);
-  --sidebar-border: #DDD2C3;
-  --sidebar-ring: var(--champagne);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--liliac-600);
+
+  /* RSVP status: Confirmat / În așteptare / Refuzat (text = --destructive) */
+  --success: var(--cobalt-700);
+  --success-bg: var(--cobalt-50);
+  --warning: var(--maple-700);
+  --warning-bg: var(--maple-50);
+  --danger-bg: var(--eugenia-50);
+
+  --chart-accepted: var(--cobalt);
+  --chart-pending: var(--maple);
+  --chart-declined: var(--eugenia);
+
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--liliac-600);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--liliac-100);
+  --sidebar-accent-foreground: var(--liliac-900);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--liliac-600);
 }
 
 .dark {
-  --collection-copy: oklch(0.8 0 0);
-  --collection-ink: oklch(0.96 0 0);
   --collection-divider: oklch(0.5 0 0);
-  --background: var(--noir);
-  --foreground: var(--ivory);
+  --background: var(--ink);
+  --foreground: var(--paper);
 }
 
 @layer base {
@@ -147,6 +241,13 @@
   }
 
 
+  /* Visible focus ring on every interactive element (fallback for elements
+     that don't set their own focus-visible ring utilities). */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring, var(--color-ring));
+    outline-offset: 2px;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -154,11 +255,33 @@
     letter-spacing: 0.005em;
   }
 
+  /* Cormorant: 400 by default (24–47px). Use font-light only at ≥48px. */
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: -0.015em;
+    line-height: 1.12;
+  }
+
+  p, li, blockquote, dd {
+    line-height: 1.6;
+  }
+
+  /* Invitation templates keep their original typography (sizes, weights). */
+  .tpl-scope {
+    --text-xs: 0.75rem;
+    --text-xs--line-height: calc(1 / 0.75);
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
+    --text-base: 1rem;
+    --text-base--line-height: 1.5;
+  }
+  .tpl-scope :where(h1, h2, h3, h4, .font-serif) {
+    font-weight: 300;
     line-height: 1.1;
+  }
+  .tpl-scope :where(p, li, blockquote, dd) {
+    line-height: inherit;
   }
 }
 
@@ -171,6 +294,19 @@
   .gold-divider {
     height: 1px;
     background: var(--border);
+  }
+
+  /* Template roots: focus ring follows the template text colour, not the app theme. */
+  .tpl-scope { --focus-ring: currentColor; }
+
+  /* Section eyebrow: sentence case, Manrope 14px / 500. Colour is set by the
+     caller (text-liliac-600 on light, text-liliac-100 on dark bands). */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.01em;
   }
 
   .luxe-shadow { box-shadow: var(--shadow-luxe); }
@@ -194,14 +330,3 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-.collection-section {
-  background: var(--collection-light);
-}
-
-.dark .collection-section {
-  background: var(--background);
-}
-
-.collection-section, .collection-section * {
-  letter-spacing: 0;
-}
