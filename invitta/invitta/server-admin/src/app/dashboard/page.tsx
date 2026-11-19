@@ -8,13 +8,13 @@ function ActionLink({ href, title, desc }: { href: string; title: string; desc: 
   return (
     <Link
       href={href}
-      className="group flex items-center justify-between rounded-md border border-border bg-card p-8 transition-all hover:border-liliac hover:soft-shadow"
+      className="group flex items-center justify-between rounded-md border border-border bg-card p-8 transition-all hover:border-primary hover:soft-shadow"
     >
       <div>
         <h3 className="font-serif text-2xl">{title}</h3>
         <p className="mt-2 text-base text-foreground">{desc}</p>
       </div>
-      <span className="text-liliac-600 text-2xl group-hover:translate-x-1 transition-transform">→</span>
+      <span className="text-link text-2xl group-hover:translate-x-1 transition-transform">→</span>
     </Link>
   );
 }
@@ -30,15 +30,17 @@ export default function DashboardHome() {
   const days = daysUntil(invitation?.content.date);
   const dateLabel = typeof invitation?.content.dateLabel === "string" ? invitation.content.dateLabel : "";
   const tiles = [
-    { label: "Confirmați", value: stats?.confirmed ?? 0, cls: "bg-success-bg text-success border-success/20", labelCls: "text-success" },
-    { label: "Refuzați", value: stats?.declined ?? 0, cls: "bg-danger-bg text-destructive border-destructive/20", labelCls: "text-destructive" },
-    { label: "Total invitați", value: stats?.total ?? 0, cls: "bg-card", labelCls: "text-muted-foreground" },
+    // Statusuri RSVP: fond -bg, text în culoarea status, bară subțire -bar.
+    { label: "Confirmați", value: stats?.confirmed ?? 0, cls: "bg-success-bg text-success", bar: "bg-success-bar" },
+    { label: "În așteptare", value: stats?.pending ?? 0, cls: "bg-warning-bg text-warning", bar: "bg-warning-bar" },
+    { label: "Nu vin", value: stats?.declined ?? 0, cls: "bg-declined-bg text-declined", bar: "bg-declined-bar" },
+    { label: "Total invitați", value: stats?.total ?? 0, cls: "bg-card text-foreground", bar: "bg-line" },
   ];
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
       {hasInvite && dateLabel && (
-        <p className="eyebrow text-liliac-600">
+        <p className="eyebrow">
           {dateLabel}
           {days !== null && days >= 0 ? ` · ${days} zile rămase` : ""}
         </p>
@@ -50,11 +52,12 @@ export default function DashboardHome() {
           : "Încă nu ai o invitație. Alege un model pentru a începe."}
       </p>
 
-      <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3">
+      <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
         {tiles.map((s) => (
-          <div key={s.label} className={`rounded-md border border-border p-6 ${s.cls}`}>
-            <p className={`text-xs font-medium ${s.labelCls}`}>{s.label}</p>
-            <p className="mt-4 font-serif text-5xl">{s.value}</p>
+          <div key={s.label} className={`rounded-md border border-border p-5 sm:p-6 ${s.cls}`}>
+            <span aria-hidden="true" className={`block h-1 w-10 rounded-full ${s.bar}`} />
+            <p className="mt-3 text-sm font-medium">{s.label}</p>
+            <p className="mt-3 font-serif text-5xl font-light">{s.value}</p>
           </div>
         ))}
       </div>
@@ -70,13 +73,13 @@ export default function DashboardHome() {
             <ActionLink href="/dashboard/mese" title="Aranjează mesele" desc="Drag & drop pentru așezarea perfectă" />
             <Link
               href={`/invitatie/${session.invitation.slug}`}
-              className="group flex items-center justify-between rounded-md border border-border bg-card p-8 transition-all hover:border-liliac hover:soft-shadow"
+              className="group flex items-center justify-between rounded-md border border-border bg-card p-8 transition-all hover:border-primary hover:soft-shadow"
             >
               <div>
                 <h3 className="font-serif text-2xl">Distribuie invitația</h3>
                 <p className="mt-2 text-sm text-muted-foreground">Linkul tău: invitta.ro/{session.invitation.slug}</p>
               </div>
-              <span className="text-liliac-600 text-2xl group-hover:translate-x-1 transition-transform">→</span>
+              <span className="text-link text-2xl group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
         </>
@@ -85,7 +88,7 @@ export default function DashboardHome() {
           <p className="text-xs font-medium text-muted-foreground">Primul pas</p>
           <h2 className="mt-3 font-serif text-2xl">Alege modelul invitației</h2>
           <p className="mt-2 text-base text-foreground">Deschide colecția, vezi demo-urile și alege modelul care vi se potrivește.</p>
-          <Link href="/modele" className="mt-6 inline-flex rounded-[4px] bg-primary px-5 py-2.5 text-sm text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">Alege un model</Link>
+          <Link href="/modele" className="mt-6 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">Alege un model</Link>
         </div>
       )}
     </div>

@@ -87,8 +87,8 @@ const DICT: Record<string, string> = {
   // Dashboard
   "Bine ai venit, Ioana": "Welcome, Ioana", "Ce vrei să faci astăzi?": "What would you like to do today?",
   "Totul merge perfect pentru ziua voastră. Iată o privire calmă asupra organizării.": "Everything is on track for your day. Here is a calm overview of your planning.",
-  "Confirmați": "Confirmed", "În așteptare": "Pending", "Refuzați": "Declined", "Total invitați": "Total guests",
-  "Confirmat": "Confirmed", "Refuzat": "Declined", "Toți": "All",
+  "Confirmați": "Confirmed", "În așteptare": "Pending", "Nu vin": "Not attending", "Total invitați": "Total guests",
+  "Confirmat": "Confirmed", "Toți": "All",
   "Editează invitația": "Edit invitation", "Vezi RSVP-uri": "View RSVPs", "Aranjează mesele": "Arrange tables",
   "Distribuie invitația": "Share invitation", "Invitația": "Invitation", "Invitația voastră": "Your invitation",
   "Confirmări": "RSVPs", "Mese": "Tables", "Invitați": "Guests", "Invitații voștri": "Your guests",

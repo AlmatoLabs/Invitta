@@ -25,19 +25,19 @@ export default function Login() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2">
-      <div className="hidden md:flex flex-col justify-between bg-liliac-900 text-liliac-50 p-12">
-        <Link href="/" className="font-serif text-2xl">Invitta<span className="text-liliac"> · </span>RSVP</Link>
+      <div className="hidden md:flex flex-col justify-between bg-blush text-foreground p-12">
+        <Link href="/" className="font-serif text-2xl">Invitta<span className="text-editorial"> · RSVP</span></Link>
         <div>
-          <h2 className="font-serif text-4xl leading-tight">&quot;Cea mai elegantă modalitate de a-ți invita oaspeții.&quot;</h2>
-          <p className="mt-4 text-sm text-liliac-100 tracking-wider">— Mireasa.ro</p>
+          <h2 className="font-serif text-4xl leading-tight">&quot;Cea mai <em className="text-display-accent">elegantă</em> modalitate de a-ți invita oaspeții.&quot;</h2>
+          <p className="mt-4 text-sm text-muted-foreground">— Mireasa.ro</p>
         </div>
-        <p className="eyebrow text-liliac-100">Pentru cuplurile care iubesc detaliile</p>
+        <p className="eyebrow">Pentru cuplurile care iubesc detaliile</p>
       </div>
 
       <div className="flex items-center justify-center p-8 bg-background">
         <div className="w-full max-w-sm">
-          <Link href="/" className="md:hidden block text-center font-serif text-2xl mb-12">Invitta<span className="text-liliac-600"> · </span>RSVP</Link>
-          <p className="eyebrow text-liliac-600">Bun venit înapoi</p>
+          <Link href="/" className="md:hidden block text-center font-serif text-2xl mb-12">Invitta<span className="text-editorial"> · RSVP</span></Link>
+          <p className="eyebrow">Bun venit înapoi</p>
           <h1 className="mt-3 font-serif text-4xl">Autentificare</h1>
 
           <form onSubmit={submit} className="mt-10 space-y-6">
@@ -76,10 +76,10 @@ export default function Login() {
           </form>
 
           <p className="mt-8 text-center text-sm text-muted-foreground">
-            Nu ai cont încă? <Link href="/register" className="text-foreground underline underline-offset-4 hover:text-liliac-600">Creează unul</Link>
+            Nu ai cont încă? <Link href="/register" className="text-link underline underline-offset-4 transition-colors duration-150 hover:text-link-hover">Creează unul</Link>
           </p>
           <p className="mt-3 text-center text-sm text-muted-foreground">
-            Sau <Link href="/modele" className="text-foreground underline underline-offset-4 hover:text-liliac-600">vezi modelele fără cont</Link>
+            Sau <Link href="/modele" className="text-link underline underline-offset-4 transition-colors duration-150 hover:text-link-hover">vezi modelele fără cont</Link>
           </p>
         </div>
       </div>

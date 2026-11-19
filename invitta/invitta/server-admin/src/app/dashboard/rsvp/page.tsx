@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState, type FormEvent } from "react";
+import { Check, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,12 +15,13 @@ import { useSession } from "@/lib/session";
 const statusLabel: Record<RsvpStatus, string> = {
   confirmat: "Confirmat",
   asteptare: "În așteptare",
-  refuzat: "Refuzat",
+  refuzat: "Nu vin",
 };
+// Statusuri RSVP: fond -bg, text în culoarea status, bară subțire -bar (eticheta e mereu vizibilă).
 const statusClass: Record<RsvpStatus, string> = {
-  confirmat: "bg-success-bg text-success",
-  asteptare: "bg-warning-bg text-warning",
-  refuzat: "bg-danger-bg text-destructive",
+  confirmat: "border-success-bar bg-success-bg text-success",
+  asteptare: "border-warning-bar bg-warning-bg text-warning",
+  refuzat: "border-declined-bar bg-declined-bg text-declined",
 };
 
 const csvCell = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
@@ -83,14 +85,14 @@ export default function RsvpPage() {
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
         <div>
-          <p className="eyebrow text-liliac-600">Confirmări</p>
+          <p className="eyebrow">Confirmări</p>
           <h1 className="mt-2 font-serif text-4xl">Invitații voștri</h1>
         </div>
         <div className="flex gap-3">
-          <Button onClick={() => setAdding((a) => !a)} className="rounded-[4px] px-5 py-2.5 h-auto">
+          <Button variant={adding ? "outline" : "default"} onClick={() => setAdding((a) => !a)} className="px-5 py-2.5 h-auto">
             {adding ? "Închide" : "Adaugă invitat"}
           </Button>
-          <Button variant="outline" onClick={exportCsv} className="rounded-full bg-card px-5 py-2.5 h-auto">
+          <Button variant="outline" onClick={exportCsv} className="px-5 py-2.5 h-auto">
             Exportă lista
           </Button>
         </div>
@@ -111,10 +113,12 @@ export default function RsvpPage() {
           {(["toti", "confirmat", "asteptare", "refuzat"] as const).map((f) => (
             <Button
               key={f}
-              variant={filter === f ? "default" : "outline"}
+              variant="ghost"
+              aria-pressed={filter === f}
               onClick={() => setFilter(f)}
-              className={`rounded-[4px] px-4 py-2 h-auto shadow-none ${filter === f ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "bg-card border-border text-muted-foreground hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700"}`}
+              className={`rounded-full border px-4 py-2 h-auto shadow-none ${filter === f ? "border-primary bg-blush-2 text-foreground hover:bg-blush-2" : "border-border bg-card text-muted-foreground hover:bg-blush hover:text-foreground"}`}
             >
+              {filter === f && <Check aria-hidden />}
               {f === "toti" ? "Toți" : statusLabel[f]}
             </Button>
           ))}
@@ -135,7 +139,7 @@ export default function RsvpPage() {
           </TableHeader>
           <TableBody>
             {visible.map((g) => (
-              <TableRow key={g.id} className="border-t border-border hover:bg-secondary/30 transition-colors">
+              <TableRow key={g.id} className="border-t border-border hover:bg-paper transition-colors">
                 <TableCell className="px-6 py-5">
                   <span className="text-base font-medium">{g.name}</span>
                   {g.message && <p className="mt-1 max-w-xs text-xs text-muted-foreground">„{g.message}”</p>}
@@ -146,7 +150,7 @@ export default function RsvpPage() {
                     onValueChange={(v) => setStatus.mutate({ id: g.id, status: v as RsvpStatus })}
                   >
                     <SelectTrigger
-                      className={`h-auto w-auto rounded-[4px] border-0 px-3 py-1 text-xs shadow-none ${statusClass[g.status]}`}
+                      className={`h-auto w-auto rounded-[4px] border-y-0 border-r-0 border-l-[3px] px-3 py-1 text-xs font-medium shadow-none ${statusClass[g.status]}`}
                       aria-label="Status"
                     >
                       <SelectValue />
@@ -166,8 +170,9 @@ export default function RsvpPage() {
                     variant="ghost"
                     size="sm"
                     onClick={() => { if (confirm(`Ștergi „${g.name}”?`)) remove.mutate(g.id); }}
-                    className="h-auto px-0 text-xs text-muted-foreground hover:bg-transparent hover:text-destructive"
+                    className="h-auto rounded-full px-3 py-1.5 text-xs text-muted-foreground hover:bg-error-bg hover:text-destructive"
                   >
+                    <Trash2 aria-hidden />
                     Șterge
                   </Button>
                 </TableCell>
@@ -213,7 +218,7 @@ function AddGuestForm({ invitationId, onDone }: { invitationId: string; onDone: 
         <Label htmlFor="guest-partner" className="text-xs font-medium text-muted-foreground">Partener (opțional)</Label>
         <Input id="guest-partner" value={partner} onChange={(e) => setPartner(e.target.value)} className={`${field} mt-2`} />
       </div>
-      <Button type="submit" disabled={add.isPending} className="rounded-[4px] px-6 py-3 h-auto">
+      <Button type="submit" disabled={add.isPending} className="px-6 py-3 h-auto">
         Adaugă
       </Button>
       {add.error && <p role="alert" className="text-sm text-destructive sm:col-span-3">{add.error.message}</p>}

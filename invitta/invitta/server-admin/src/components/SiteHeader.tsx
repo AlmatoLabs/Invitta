@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getStoredLang, setLanguage, LANG_EVENT, type Lang } from "@/lib/i18n";
 import { useAuthActions, useSession } from "@/lib/session";
-import { User, X } from "lucide-react";
+import { Check, User, X } from "lucide-react";
 
 const t = { features: "Funcționalități", models: "Modele", pricing: "Prețuri", create: "Creează invitația", profile: "Profilul meu", dashboard: "Panoul meu", language: "Limbă", signIn: "Autentificare", account: "Contul tău" };
 
@@ -30,7 +30,7 @@ export function ProfileMenu() {
   const initial = session?.name?.trim()?.charAt(0)?.toUpperCase();
   return (
     <div ref={ref} className="relative">
-      <Button variant="outline" size="icon" onClick={() => setOpen(!open)} aria-label={t.account} aria-expanded={open}
+      <Button variant="secondary" size="icon" onClick={() => setOpen(!open)} aria-label={t.account} aria-expanded={open}
         className="h-11 w-11 md:h-10 md:w-10 rounded-full font-serif text-base shadow-none">
         {initial ? initial : <User size={18} strokeWidth={1.5} aria-hidden />}
       </Button>
@@ -41,9 +41,9 @@ export function ProfileMenu() {
               <p className="text-base font-medium">{session.name || "Invitta"}</p>
               <p className="text-xs text-muted-foreground">{session.email}</p>
               <div className="mt-4 space-y-2 border-t border-border pt-3 text-sm">
-                <Link href="/dashboard/invitatii" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">Invitațiile mele</Link>
-                <Link href="/dashboard/profil" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">{t.profile}</Link>
-                <Link href="/dashboard/facturi" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">Facturile mele</Link>
+                <Link href="/dashboard/invitatii" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-link">Invitațiile mele</Link>
+                <Link href="/dashboard/profil" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-link">{t.profile}</Link>
+                <Link href="/dashboard/facturi" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-link">Facturile mele</Link>
               </div>
             </>
           ) : (
@@ -51,7 +51,7 @@ export function ProfileMenu() {
               <p className="text-base font-medium">Bine ai venit</p>
               <p className="text-xs text-muted-foreground">Vezi modelele și demo-urile fără cont.</p>
               <div className="mt-4 space-y-2 border-t border-border pt-3">
-                <Link href="/modele" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-liliac-600">Modele</Link>
+                <Link href="/modele" onClick={() => setOpen(false)} className="block transition-colors duration-150 hover:text-link">Modele</Link>
                 <Button asChild className="mt-2 w-full shadow-none"><Link href="/login" onClick={() => setOpen(false)}><User size={16} strokeWidth={1.5} aria-hidden />{t.signIn}</Link></Button>
               </div>
             </div>
@@ -59,14 +59,15 @@ export function ProfileMenu() {
           <p className="mt-4 text-xs font-medium text-muted-foreground">{t.language}</p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {(["ro", "en"] as Lang[]).map((l) => (
-              <Button key={l} variant={lang === l ? "default" : "outline"} onClick={() => setLang(l)}
-                className="shadow-none">
+              <Button key={l} variant={lang === l ? "secondary" : "ghost"} onClick={() => setLang(l)} aria-pressed={lang === l}
+                className={`rounded-full shadow-none ${lang === l ? "border border-primary bg-blush-2 hover:bg-blush-2" : "border border-border"}`}>
+                {lang === l && <Check aria-hidden />}
                 <span data-no-translate>{l === "ro" ? "Română" : "English"}</span>
               </Button>
             ))}
           </div>
           {session && (
-            <Button variant="ghost" onClick={() => { setOpen(false); logout(); }} className="mt-4 h-auto w-full justify-start rounded-none border-t border-border px-0 pt-3 text-left font-normal hover:bg-transparent hover:text-liliac-600">
+            <Button variant="ghost" onClick={() => { setOpen(false); logout(); }} className="mt-4 h-auto w-full justify-start rounded-none border-t border-border px-0 pt-3 text-left font-normal hover:bg-transparent hover:text-link">
               Deconectare
             </Button>
           )}
@@ -84,13 +85,13 @@ export function SiteHeader() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
-  const navLink = "inline-flex min-h-8 items-center transition-colors duration-150 hover:text-liliac-600";
-  const menuLink = "block py-3 text-muted-foreground transition-colors duration-150 hover:text-liliac-600";
+  const navLink = "inline-flex min-h-8 items-center transition-colors duration-150 hover:text-link";
+  const menuLink = "block py-3 text-muted-foreground transition-colors duration-150 hover:text-link";
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link href="/" className="font-serif text-2xl tracking-tight">
-          Invitta<span className="text-liliac-600"> · </span><span className="text-base tracking-[0.3em] uppercase">RSVP</span>
+          Invitta<span className="text-editorial"> · </span><span className="text-base tracking-[0.3em] uppercase text-editorial">RSVP</span>
         </Link>
         <nav className="hidden items-center gap-10 text-sm text-muted-foreground md:flex">
           <Link href="/#features" className={navLink}>{t.features}</Link>
@@ -98,12 +99,12 @@ export function SiteHeader() {
           <Link href="/#pricing" className={navLink}>{t.pricing}</Link>
         </nav>
         <div className="flex items-center gap-3">
-          <Button asChild className="hidden sm:inline-flex px-5 shadow-none">
+          <Button asChild variant="outline" className="hidden sm:inline-flex px-5">
             <Link href="/register">{t.create}</Link>
           </Button>
           <ProfileMenu />
           <Button
-            variant="outline"
+            variant="secondary"
             size="icon"
             className="md:hidden h-11 w-11 rounded-full shadow-none"
             onClick={() => setOpen(!open)}
@@ -125,7 +126,7 @@ export function SiteHeader() {
         <Link href="/#features" onClick={() => setOpen(false)} className={menuLink}>{t.features}</Link>
         <Link href="/modele" onClick={() => setOpen(false)} className={menuLink}>{t.models}</Link>
         <Link href="/#pricing" onClick={() => setOpen(false)} className={menuLink}>{t.pricing}</Link>
-        <Button asChild className="mt-3 h-11 w-full shadow-none"><Link href="/register" onClick={() => setOpen(false)}>{t.create}</Link></Button>
+        <Button asChild variant="outline" className="mt-3 h-11 w-full"><Link href="/register" onClick={() => setOpen(false)}>{t.create}</Link></Button>
       </div>
     </header>
   );

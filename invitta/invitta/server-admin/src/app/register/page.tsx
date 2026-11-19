@@ -38,7 +38,7 @@ function Intro() {
   const paid = plan !== undefined && plan.price > 0;
   return (
     <>
-      <p className="eyebrow text-liliac-600">{paid ? `Pachet ${plan.name}` : "Începe gratuit"}</p>
+      <p className="eyebrow">{paid ? `Pachet ${plan.name}` : "Începe gratuit"}</p>
       <h1 className="mt-3 font-serif text-4xl">Creează invitația voastră</h1>
       <p className="mt-3 text-base text-foreground">{paid ? "Două minute pentru a crea contul." : "Două minute. Fără card de credit."}</p>
     </>
@@ -57,13 +57,13 @@ function SelectionSummary() {
           {plan && (
             <p className="flex flex-wrap items-baseline justify-between gap-x-3">
               <span>Pachet: {plan.name} · €{plan.price}</span>
-              <Link href="/#pricing" className="inline-flex min-h-8 items-center text-muted-foreground underline underline-offset-4 transition-colors duration-150 hover:text-liliac-600">Schimbă</Link>
+              <Link href="/#pricing" className="inline-flex min-h-8 items-center text-muted-foreground underline underline-offset-4 transition-colors duration-150 hover:text-link">Schimbă</Link>
             </p>
           )}
           {design && (
             <p className="flex flex-wrap items-baseline justify-between gap-x-3">
               <span>Design: {design.model}</span>
-              <Link href="/modele" className="inline-flex min-h-8 items-center text-muted-foreground underline underline-offset-4 transition-colors duration-150 hover:text-liliac-600">Schimbă</Link>
+              <Link href="/modele" className="inline-flex min-h-8 items-center text-muted-foreground underline underline-offset-4 transition-colors duration-150 hover:text-link">Schimbă</Link>
             </p>
           )}
         </div>
@@ -121,7 +121,7 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-6 py-16">
       <div className="w-full max-w-md">
-        <Link href="/" className="block text-center font-serif text-2xl mb-12">Invitta<span className="text-liliac-600"> · </span>RSVP</Link>
+        <Link href="/" className="block text-center font-serif text-2xl mb-12">Invitta<span className="text-editorial"> · RSVP</span></Link>
         <div className="text-center">
           <Suspense fallback={<h1 className="font-serif text-4xl">Creează invitația voastră</h1>}>
             <Intro />
@@ -182,7 +182,7 @@ export default function Register() {
                 onClick={() => setShowPwd((v) => !v)}
                 aria-pressed={showPwd}
                 aria-controls="password"
-                className="absolute inset-y-0 right-0 flex min-w-20 items-center justify-center rounded-r-md px-3 text-xs text-muted-foreground hover:text-liliac-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="absolute inset-y-0 right-0 flex min-w-20 items-center justify-center rounded-r-md px-3 text-xs text-muted-foreground hover:text-link focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
                 {showPwd ? "Ascunde" : "Arată"}
               </button>
@@ -201,10 +201,10 @@ export default function Register() {
         </form>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          Ai deja cont? <Link href="/login" className="text-foreground underline underline-offset-4 hover:text-liliac-600">Autentifică-te</Link>
+          Ai deja cont? <Link href="/login" className="text-link underline underline-offset-4 transition-colors duration-150 hover:text-link-hover">Autentifică-te</Link>
         </p>
         <p className="mt-3 text-center text-sm text-muted-foreground">
-          Sau <Link href="/modele" className="text-foreground underline underline-offset-4 hover:text-liliac-600">vezi mai întâi modelele</Link>
+          Sau <Link href="/modele" className="text-link underline underline-offset-4 transition-colors duration-150 hover:text-link-hover">vezi mai întâi modelele</Link>
         </p>
       </div>
     </div>

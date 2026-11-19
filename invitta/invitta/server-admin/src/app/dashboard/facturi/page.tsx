@@ -12,7 +12,7 @@ export default function Invoices() {
   const { data: invoices, isPending } = useInvoices();
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <p className="eyebrow text-liliac-600">Contul tău</p>
+      <p className="eyebrow">Contul tău</p>
       <h1 className="mt-3 font-serif text-5xl">Facturile mele</h1>
       <div className="mt-12 border-t border-border">
         {invoices?.map((i) => (

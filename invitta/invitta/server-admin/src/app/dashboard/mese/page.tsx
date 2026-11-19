@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState, type DragEvent } from "react";
+import { Check, Trash2 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
@@ -22,14 +23,20 @@ const TABLE_COLORS = [
 ];
 
 /** Culoarea mesei e aleasă de miri → alegem textul (ink / paper) cu contrastul mai bun. */
-function readableOn(hex: string): string {
+function luminance(hex: string): number | null {
   const m = /^#?([0-9a-f]{6})$/i.exec(hex);
-  if (!m) return "var(--paper)";
+  if (!m) return null;
   const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
   const n = parseInt(m[1], 16);
-  const L = 0.2126 * lin(((n >> 16) & 255) / 255) + 0.7152 * lin(((n >> 8) & 255) / 255) + 0.0722 * lin((n & 255) / 255);
-  // L(ink #2E2230) ≈ 0.019, L(paper #FBF8F9) ≈ 0.944
-  return (L + 0.05) / (0.019 + 0.05) >= (0.944 + 0.05) / (L + 0.05) ? "var(--ink)" : "var(--paper)";
+  return 0.2126 * lin(((n >> 16) & 255) / 255) + 0.7152 * lin(((n >> 8) & 255) / 255) + 0.0722 * lin((n & 255) / 255);
+}
+// Must match --ink / --paper in globals.css.
+const L_INK = luminance("#3A2A2A")!;
+const L_PAPER = luminance("#FDFAF9")!;
+function readableOn(hex: string): string {
+  const L = luminance(hex);
+  if (L === null) return "var(--paper)";
+  return (L + 0.05) / (L_INK + 0.05) >= (L_PAPER + 0.05) / (L + 0.05) ? "var(--ink)" : "var(--paper)";
 }
 
 const SHAPES: { id: Shape; label: string }[] = [
@@ -125,7 +132,7 @@ export default function Tables() {
     <div className="min-h-[calc(100vh-80px)] flex flex-col">
       {/* Header */}
       <div className="border-b border-border bg-background/90 backdrop-blur-xl px-4 sm:px-8 py-5">
-        <p className="eyebrow text-liliac-600">
+        <p className="eyebrow">
           {subtitle}
         </p>
         <h1 className="mt-2 font-serif text-3xl sm:text-4xl">Așezarea la mese</h1>
@@ -141,13 +148,13 @@ export default function Tables() {
         <ToolbarButton icon="↗">Export</ToolbarButton>
         <ToolbarButton icon="◉">3D</ToolbarButton>
         <ToolbarButton icon="?">Ajutor</ToolbarButton>
-        <div className="ml-auto flex items-center gap-2 text-xs text-liliac-600">
-          <span className="h-2 w-2 rounded-full bg-liliac" aria-hidden="true" /> Salvat automat
+        <div className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
+          <span className="h-2 w-2 rounded-full bg-success-bar" aria-hidden="true" /> Salvat automat
         </div>
       </div>
 
       {error && (
-        <p role="alert" className="border-b border-border bg-destructive/10 px-4 py-2 text-sm text-destructive sm:px-8">{error}</p>
+        <p role="alert" className="border-b border-border bg-error-bg px-4 py-2 text-sm text-destructive sm:px-8">{error}</p>
       )}
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-[280px_1fr]">
@@ -187,7 +194,7 @@ export default function Tables() {
                         draggable={!isAssigned}
                         onDragStart={() => !isAssigned && onDragStart(m.id, "pool")}
                         className={`mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition ${
-                          isAssigned ? "opacity-40 line-through" : "cursor-grab bg-transparent hover:bg-liliac-50"
+                          isAssigned ? "opacity-40 line-through" : "cursor-grab bg-transparent hover:bg-blush"
                         }`}
                       >
                         <span className="h-2 w-2 rounded-full border border-muted-foreground/40" />
@@ -263,14 +270,14 @@ export default function Tables() {
 function ToolbarButton({ icon, children }: { icon: string; children: React.ReactNode }) {
   return (
     <Button variant="secondary" size="sm" className="rounded-full px-4 py-2 h-auto text-xs font-normal shadow-none">
-      <span className="text-liliac-600">{icon}</span> {children}
+      <span aria-hidden="true" className="text-editorial">{icon}</span> {children}
     </Button>
   );
 }
 
 function ZoomBtn({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
-    <Button variant="outline" size="icon" onClick={onClick} className="h-8 w-8 rounded-full border-border bg-transparent shadow-none text-sm font-normal">
+    <Button variant="ghost" size="icon" onClick={onClick} className="h-8 w-8 rounded-full border border-border bg-transparent text-sm font-normal">
       {children}
     </Button>
   );
@@ -351,7 +358,7 @@ function TableShape({
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
       className={`group relative h-[300px] w-[300px] rounded-md transition-all ${
-        selected ? "bg-liliac-50 ring-2 ring-liliac-600 ring-offset-2 ring-offset-paper" : ""
+        selected ? "bg-blush-2 ring-2 ring-primary ring-offset-2 ring-offset-paper" : ""
       }`}
     >
       <div className="absolute inset-0">
@@ -384,17 +391,17 @@ function TableShape({
 
       {/* Controls */}
       {selected && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-[4px] bg-primary text-primary-foreground px-2 py-1 text-xs">
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(Math.max(1, table.seats - 1)); }} className="h-6 w-6 hover:bg-primary-foreground/10 hover:text-primary-foreground rounded-full">−</Button>
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 whitespace-nowrap rounded-full border border-primary bg-card px-2 py-1 text-xs text-foreground shadow-sm">
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(Math.max(1, table.seats - 1)); }} aria-label="Un loc mai puțin" className="h-6 w-6 rounded-full hover:bg-blush">−</Button>
           <span className="px-1 tabular-nums">{table.seats}</span>
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(table.seats + 1); }} className="h-6 w-6 hover:bg-primary-foreground/10 hover:text-primary-foreground rounded-full">＋</Button>
-          <Separator orientation="vertical" className="mx-1 h-3 bg-primary-foreground/30" />
-          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onRemove(); }} className="h-6 w-6 hover:bg-destructive hover:text-destructive-foreground rounded-full">🗑</Button>
+          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onSeatsChange(table.seats + 1); }} aria-label="Un loc în plus" className="h-6 w-6 rounded-full hover:bg-blush">＋</Button>
+          <Separator orientation="vertical" className="mx-1 h-3 bg-border" />
+          <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); onRemove(); }} className="h-6 rounded-full px-2 text-xs font-normal text-muted-foreground hover:bg-error-bg hover:text-destructive"><Trash2 aria-hidden className="size-3.5!" />Șterge</Button>
         </div>
       )}
 
       {free > 0 && (
-        <div className="absolute bottom-2 right-2 text-xs font-medium text-liliac-600">
+        <div className="absolute bottom-2 right-2 text-xs font-medium text-editorial">
           {free} libere
         </div>
       )}
@@ -425,8 +432,8 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="rounded-[4px] bg-primary text-primary-foreground hover:bg-primary-hover px-4 py-2 h-auto text-xs font-normal shadow-none">
-          <span className="text-liliac-100">＋</span> Masă nouă
+        <Button size="sm" className="px-4 py-2 h-auto text-xs font-medium">
+          <span aria-hidden="true">＋</span> Masă nouă
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-background border-border max-w-md">
@@ -455,9 +462,12 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
                   <Button
                     key={c} type="button" variant="ghost" size="icon" onClick={() => setColor(c)}
                     aria-label={c}
-                    className={`h-7 w-7 rounded-full border-2 transition-transform duration-150 hover:scale-110 ${color === c ? "border-ink scale-110" : "border-transparent"}`}
-                    style={{ background: c }}
-                  />
+                    aria-pressed={color === c}
+                    className={`h-7 w-7 rounded-full border-2 transition-transform duration-150 hover:scale-110 ${color === c ? "border-primary scale-110" : "border-transparent"}`}
+                    style={{ background: c, color: readableOn(c) }}
+                  >
+                    {color === c && <Check aria-hidden />}
+                  </Button>
                 ))}
               </div>
             </div>
@@ -467,9 +477,9 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
             <Label className="text-xs font-medium text-muted-foreground">Formă</Label>
             <div className="mt-2 grid grid-cols-5 gap-2">
               {SHAPES.map((s) => (
-                <Button key={s.id} type="button" variant="outline" onClick={() => setShape(s.id)}
+                <Button key={s.id} type="button" variant="ghost" aria-pressed={shape === s.id} onClick={() => setShape(s.id)}
                   className={`flex h-auto flex-col items-center gap-2 rounded-xl border-2 p-3 shadow-none transition ${
-                    shape === s.id ? "border-liliac-600 bg-liliac-50 hover:bg-liliac-50" : "border-border bg-transparent hover:bg-transparent hover:border-muted-foreground/40"
+                    shape === s.id ? "border-primary bg-blush-2 hover:bg-blush-2" : "border-border bg-transparent hover:bg-blush"
                   }`}>
                   <ShapeIcon shape={s.id} />
                   <span className="text-xs font-normal text-muted-foreground">{s.label}</span>
@@ -487,10 +497,10 @@ function NewTableDialog({ onCreate }: { onCreate: (t: NewTable) => void }) {
         </div>
 
         <DialogFooter className="mt-4">
-          <Button variant="secondary" onClick={() => setOpen(false)} className="rounded-full px-5 py-2.5 h-auto shadow-none">
+          <Button variant="secondary" onClick={() => setOpen(false)} className="px-5 py-2.5 h-auto">
             Anulează
           </Button>
-          <Button onClick={submit} className="rounded-[4px] bg-primary text-primary-foreground px-6 py-2.5 h-auto hover:bg-primary-hover shadow-none">
+          <Button onClick={submit} className="px-6 py-2.5 h-auto">
             Salvează
           </Button>
         </DialogFooter>

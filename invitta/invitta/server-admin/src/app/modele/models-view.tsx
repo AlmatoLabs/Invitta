@@ -22,7 +22,7 @@ export function ModelsView() {
       <section className="mx-auto max-w-[1400px] px-6 pb-16 pt-20 md:pb-20 md:pt-28">
         <div className="grid gap-x-12 gap-y-6 sm:grid-cols-2 sm:items-end">
           <div>
-            <p className="eyebrow text-liliac-600">Colecția 2026</p>
+            <p className="eyebrow">Colecția 2026</p>
             <h1 className="mt-5 font-serif text-4xl leading-[1.12] text-foreground lg:text-6xl lg:font-light">
               <span className="block">Modele</span>
               <em className="block">pentru fiecare poveste</em>
@@ -54,11 +54,11 @@ export function ModelsView() {
                 <div className="flex items-baseline justify-between gap-4">
                   <Link
                     href={`/invitatie/${d.slug}`}
-                    className="min-w-0 font-serif text-[28px] leading-tight text-foreground decoration-1 underline-offset-8 transition-colors duration-150 hover:text-liliac-600 group-hover:underline focus-visible:underline"
+                    className="min-w-0 font-serif text-[28px] leading-tight text-foreground decoration-1 underline-offset-8 transition-colors duration-150 hover:text-link group-hover:underline focus-visible:underline"
                   >
                     {d.model}
                   </Link>
-                  <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-liliac-600">
+                  <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-display-accent">
                     {["I", "II", "III", "IV"][index]}
                   </span>
                 </div>
@@ -67,9 +67,9 @@ export function ModelsView() {
                 <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <Link
                     href={`/invitatie/${d.slug}`}
-                    className="group/demo inline-flex min-h-8 items-center gap-3 text-[14px] font-medium text-liliac-600 transition-colors duration-150 hover:text-liliac-700"
+                    className="group/demo inline-flex min-h-8 items-center gap-3 text-[14px] font-medium text-link transition-colors duration-150 hover:text-link-hover"
                   >
-                    <span className="border-b border-liliac-600/40 pb-1 transition-colors duration-150 group-hover/demo:border-liliac-700">
+                    <span className="border-b border-link/40 pb-1 transition-colors duration-150 group-hover/demo:border-link-hover">
                       Vezi demo
                     </span>
                     <span aria-hidden="true" className="transition-transform duration-500 group-hover/demo:translate-x-1">→</span>
@@ -82,7 +82,7 @@ export function ModelsView() {
                       onClick={() =>
                         choose.mutate(d.slug, { onSuccess: () => router.push("/dashboard/invitatie") })
                       }
-                      className="h-auto min-h-11 rounded-[4px] border-liliac-600 bg-transparent px-6 py-2.5 text-[14px] font-medium text-liliac-700 shadow-none hover:border-primary-hover hover:bg-primary-hover hover:text-white"
+                      className="h-auto min-h-11 px-6 py-2.5 text-[14px] font-medium"
                     >
                       Alege acest model
                     </Button>
@@ -90,7 +90,7 @@ export function ModelsView() {
                     <Button
                       asChild
                       variant="outline"
-                      className="h-auto min-h-11 rounded-[4px] border-liliac-600 bg-transparent px-6 py-2.5 text-[14px] font-medium text-liliac-700 shadow-none hover:border-primary-hover hover:bg-primary-hover hover:text-white"
+                      className="h-auto min-h-11 px-6 py-2.5 text-[14px] font-medium"
                     >
                       <Link href={`/register?design=${d.slug}`}>Alege acest model</Link>
                     </Button>
@@ -104,10 +104,10 @@ export function ModelsView() {
         <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-border pt-10">
           <p className="text-base text-foreground">Nu știi ce ți se potrivește? Vezi pachetele și prețurile.</p>
           <div className="flex flex-wrap items-center gap-4">
-            <Button asChild className="h-auto rounded-[4px] px-6 py-3 text-[14px] font-medium shadow-none">
+            <Button asChild className="h-auto px-6 py-3 text-[14px] font-medium">
               <Link href="/#pricing">Prețuri</Link>
             </Button>
-            <Link href="/" className="inline-flex min-h-8 items-center text-[14px] font-medium text-liliac-600 underline decoration-liliac-600/40 underline-offset-8 transition-colors duration-150 hover:text-liliac-700 hover:decoration-liliac-700">
+            <Link href="/" className="inline-flex min-h-8 items-center text-[14px] font-medium text-link underline decoration-link/40 underline-offset-8 transition-colors duration-150 hover:text-link-hover hover:decoration-link-hover">
               Înapoi acasă
             </Link>
           </div>

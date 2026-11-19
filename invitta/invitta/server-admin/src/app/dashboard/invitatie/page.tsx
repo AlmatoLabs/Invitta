@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { cloneElement, isValidElement, useCallback, useEffect, useId, useRef, useState } from "react";
+import { Check, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -99,7 +100,7 @@ export default function Builder() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
         <div>
-          <p className="eyebrow text-liliac-600">Editor</p>
+          <p className="eyebrow">Editor</p>
           <h1 className="mt-2 font-serif text-4xl">Invitația voastră</h1>
           <p className="mt-2 text-base text-foreground">Personalizați fiecare detaliu. Modificările sunt salvate automat.</p>
         </div>
@@ -107,7 +108,7 @@ export default function Builder() {
           <Button
             variant="outline"
             onClick={() => setShareOpen(true)}
-            className="h-auto rounded-full border-liliac-600 bg-transparent px-6 py-3 text-liliac-700 shadow-none hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700"
+            className="h-auto px-6 py-3"
           >
             Trimite invitația
           </Button>
@@ -115,12 +116,12 @@ export default function Builder() {
             href="/invitatie/preview"
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-border bg-card px-6 py-3 text-sm transition-colors duration-150 hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700 inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 rounded-full border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors duration-150 hover:border-primary-hover hover:bg-blush hover:text-primary-hover"
           >
             <span>Previzualizare</span>
-            <span className="text-liliac-600">↗</span>
+            <span aria-hidden="true">↗</span>
           </a>
-          <Button onClick={save} className="h-auto rounded-[4px] px-6 py-3 shadow-none">
+          <Button onClick={save} className="h-auto px-6 py-3">
             {saved ? "✓ Salvat" : saveMutation.isPending ? "Se salvează…" : "Salvează"}
           </Button>
         </div>
@@ -128,7 +129,7 @@ export default function Builder() {
 
       {/* Tabs */}
       <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="mb-8">
-        <TabsList className="h-auto w-fit flex-wrap justify-start gap-1 rounded-md bg-secondary/40 p-1">
+        <TabsList className="h-auto w-fit flex-wrap justify-start gap-1 rounded-3xl border border-border bg-card p-1">
           {[
             { id: "info", label: "Informații generale" },
             { id: "people", label: "Sărbătoriți" },
@@ -139,7 +140,7 @@ export default function Builder() {
             <TabsTrigger
               key={t.id}
               value={t.id}
-              className="rounded-xl px-4 py-2 text-xs sm:text-sm text-muted-foreground transition-colors duration-150 hover:text-liliac-700 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+              className="rounded-full border border-transparent px-4 py-2 text-xs sm:text-sm text-muted-foreground transition-colors duration-150 hover:bg-blush hover:text-foreground data-[state=active]:border-primary data-[state=active]:bg-blush-2 data-[state=active]:font-medium data-[state=active]:text-foreground data-[state=active]:shadow-none"
             >
               {t.label}
             </TabsTrigger>
@@ -160,10 +161,10 @@ export default function Builder() {
             href="/invitatie/preview"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-liliac-600"
+            className="inline-flex items-center gap-2 text-sm text-link transition-colors duration-150 hover:text-link-hover"
           >
             Deschide previzualizarea într-o pagină nouă
-            <span className="text-liliac-600">↗</span>
+            <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
@@ -185,17 +186,17 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="w-full sm:max-w-lg rounded-2xl bg-background p-6 sm:p-8">
-        <p className="eyebrow text-liliac-600">Distribuie</p>
+        <p className="eyebrow">Distribuie</p>
         <DialogTitle className="mt-2 font-serif text-3xl font-normal">Trimite invitația</DialogTitle>
         <DialogDescription className="mt-2 text-base text-foreground">
           Copiază linkul și trimite-l invitaților. Oricine îl deschide vede invitația.
         </DialogDescription>
         <Input readOnly value={link || "Se generează linkul…"} onFocus={(e) => e.target.select()} className={`${input} mt-6 font-mono text-xs`} />
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <Button disabled={!link} onClick={copy} className="h-auto rounded-[4px] px-4 py-3 shadow-none">
+          <Button disabled={!link} onClick={copy} className="h-auto px-4 py-3">
             {copied ? "✓ Copiat" : "Copiază linkul"}
           </Button>
-          <Button asChild variant="outline" className="h-auto rounded-[4px] px-4 py-3 shadow-none">
+          <Button asChild variant="outline" className="h-auto px-4 py-3">
             <a
               href={link ? `https://wa.me/?text=${encodeURIComponent(link)}` : undefined}
               target="_blank"
@@ -204,7 +205,7 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
               WhatsApp
             </a>
           </Button>
-          <Button asChild variant="outline" className="h-auto rounded-[4px] px-4 py-3 shadow-none">
+          <Button asChild variant="outline" className="h-auto px-4 py-3">
             <a href={link || undefined} target="_blank" rel="noreferrer">
               Deschide
             </a>
@@ -213,7 +214,7 @@ function ShareDialog({ slug, onClose }: { slug: string; onClose: () => void }) {
         <p className="mt-4 text-xs text-muted-foreground">
           Linkul arată mereu versiunea salvată a invitației, iar confirmările invitaților ajung în secțiunea RSVP.
         </p>
-        <Button variant="ghost" onClick={onClose} className="mt-6 w-full text-sm text-muted-foreground hover:bg-transparent hover:text-liliac-600">
+        <Button variant="ghost" onClick={onClose} className="mt-6 w-full rounded-full text-sm text-muted-foreground hover:bg-blush hover:text-foreground">
           Închide
         </Button>
       </DialogContent>
@@ -231,13 +232,13 @@ function Card({ title, hint, children }: { title: string; hint?: string; childre
         <Button
           type="button"
           variant="ghost"
-          className="h-auto w-full justify-between whitespace-normal rounded-none px-6 py-5 text-left font-normal hover:bg-transparent"
+          className="h-auto w-full justify-between whitespace-normal rounded-none px-6 py-5 text-left font-normal hover:bg-paper"
         >
           <div>
             <h3 className="font-serif text-2xl">{title}</h3>
             {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
           </div>
-          <span className={`text-liliac-600 transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
+          <span aria-hidden="true" className={`text-link transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="px-6 pb-6 space-y-5 border-t border-border pt-5">{children}</CollapsibleContent>
@@ -359,12 +360,18 @@ function InfoTab({ data, set }: { data: Data; set: <K extends keyof Data>(k: K, 
             ].map((c) => (
               <button
                 key={c.id}
+                type="button"
+                aria-label={`Tema ${c.id}`}
+                aria-pressed={data.theme === c.id}
                 onClick={() => set("theme", c.id)}
-                className={`h-12 w-12 rounded-full border-2 overflow-hidden transition-all ${
-                  data.theme === c.id ? "border-liliac-600 scale-110" : "border-border"
+                className={`relative h-12 w-12 rounded-full border-2 transition-all ${
+                  data.theme === c.id ? "border-primary scale-110" : "border-border hover:border-primary"
                 }`}
               >
-                <div className="h-full w-full grid grid-cols-2">
+                {data.theme === c.id && (
+                  <span aria-hidden="true" className="absolute -right-1 -top-1 z-10 grid size-5 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-3" /></span>
+                )}
+                <div className="h-full w-full grid grid-cols-2 overflow-hidden rounded-full">
                   <div style={{ background: c.colors[0] }} />
                   <div style={{ background: c.colors[1] }} />
                 </div>
@@ -526,13 +533,13 @@ function CustomTab({ data, set }: { data: Data; set: <K extends keyof Data>(k: K
       </Card>
 
       <Card title="Galerie foto">
-        <Button variant="outline" className="h-auto w-full rounded-md border-dashed bg-secondary/30 p-8 font-normal text-muted-foreground shadow-none hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700">
+        <Button variant="outline" className="h-auto w-full rounded-md border-dashed border-border bg-transparent p-8 font-normal text-muted-foreground hover:border-primary hover:bg-blush hover:text-link">
           + Adaugă fotografii
         </Button>
       </Card>
 
       <Card title="Muzică de fundal">
-        <Button variant="outline" className="h-auto w-full rounded-md border-dashed bg-secondary/30 p-6 font-normal text-muted-foreground shadow-none hover:border-liliac-700 hover:bg-liliac-50 hover:text-liliac-700">
+        <Button variant="outline" className="h-auto w-full rounded-md border-dashed border-border bg-transparent p-6 font-normal text-muted-foreground hover:border-primary hover:bg-blush hover:text-link">
           ♫  Alege o melodie
         </Button>
       </Card>
@@ -564,12 +571,12 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
   };
 
   return (
-    <div className="rounded-md border border-dashed border-border bg-secondary/20 p-4">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-liliac-900">
+    <div className="rounded-md border border-dashed border-border bg-paper p-4">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-neutral-soft">
         {value ? (
           <img src={value} alt="" className="h-full w-full object-cover" />
         ) : (
-          <div className="h-full w-full grid place-items-center text-liliac-100 text-sm">Fără imagine</div>
+          <div className="h-full w-full grid place-items-center text-muted-foreground text-sm">Fără imagine</div>
         )}
       </div>
 
@@ -577,33 +584,38 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
         <Button
           type="button"
           size="sm"
-          variant={tab === "gallery" ? "default" : "secondary"}
+          variant="ghost"
+          aria-pressed={tab === "gallery"}
           onClick={() => setTab("gallery")}
-          className={`h-auto rounded-[4px] px-4 py-2 shadow-none ${
-            tab === "gallery" ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "text-foreground"
+          className={`h-auto rounded-full border px-4 py-2 ${
+            tab === "gallery" ? "border-primary bg-blush-2 font-medium hover:bg-blush-2" : "border-border bg-card hover:bg-blush"
           }`}
         >
-          🖼  Galerie
+          {tab === "gallery" && <Check aria-hidden />}
+          Galerie
         </Button>
         <Button
           type="button"
           size="sm"
-          variant={tab === "upload" ? "default" : "secondary"}
+          variant="ghost"
+          aria-pressed={tab === "upload"}
           onClick={() => { setTab("upload"); fileRef.current?.click(); }}
-          className={`h-auto rounded-[4px] px-4 py-2 shadow-none ${
-            tab === "upload" ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "text-foreground"
+          className={`h-auto rounded-full border px-4 py-2 ${
+            tab === "upload" ? "border-primary bg-blush-2 font-medium hover:bg-blush-2" : "border-border bg-card hover:bg-blush"
           }`}
         >
-          ↑  Încarcă poză
+          {tab === "upload" && <Check aria-hidden />}
+          Încarcă poză
         </Button>
         <Button
           type="button"
           size="sm"
-          variant="secondary"
+          variant="ghost"
           onClick={() => onChange("")}
-          className="h-auto rounded-[4px] px-4 py-2 text-muted-foreground shadow-none hover:text-destructive"
+          className="h-auto rounded-full px-4 py-2 text-muted-foreground hover:bg-error-bg hover:text-destructive"
         >
-          🗑  Șterge
+          <Trash2 aria-hidden />
+          Șterge imaginea
         </Button>
         <input
           ref={fileRef} type="file" accept="image/*" className="hidden"
@@ -617,12 +629,17 @@ function ImagePicker({ value, onChange }: { value: string; onChange: (v: string)
             <button
               key={i}
               type="button"
+              aria-pressed={value === src}
+              aria-label={`Imaginea ${i + 1}`}
               onClick={() => onChange(src)}
               className={`relative aspect-square overflow-hidden rounded-lg border-2 transition ${
-                value === src ? "border-liliac-600" : "border-transparent hover:border-border"
+                value === src ? "border-primary" : "border-transparent hover:border-primary/50"
               }`}
             >
               <img src={src} alt="" className="h-full w-full object-cover" />
+              {value === src && (
+                <span aria-hidden="true" className="absolute right-1 top-1 grid size-5 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-3" /></span>
+              )}
             </button>
           ))}
         </div>
@@ -664,29 +681,33 @@ function SectionsTab({ sections, onChange }: { sections: Section[]; onChange: (s
             <span className="flex-1 text-base font-medium">{s.label}</span>
             <div className="flex items-center gap-1">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="icon"
                 onClick={() => move(i, -1)}
                 disabled={i === 0}
-                className="h-8 w-8 rounded-full bg-transparent shadow-none"
+                aria-label="Mută mai sus"
+                className="h-8 w-8 rounded-full border border-border"
                 title="Sus"
               >↑</Button>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="icon"
                 onClick={() => move(i, 1)}
                 disabled={i === sections.length - 1}
-                className="h-8 w-8 rounded-full bg-transparent shadow-none"
+                aria-label="Mută mai jos"
+                className="h-8 w-8 rounded-full border border-border"
                 title="Jos"
               >↓</Button>
               <Button
                 size="sm"
-                variant={s.enabled ? "default" : "secondary"}
+                variant="ghost"
+                aria-pressed={s.enabled}
                 onClick={() => toggle(i)}
-                className={`ml-2 h-auto rounded-[4px] px-3 py-1 shadow-none ${
-                  s.enabled ? "bg-primary text-primary-foreground hover:bg-primary-hover" : "text-muted-foreground"
+                className={`ml-2 h-auto rounded-full border px-3 py-1 ${
+                  s.enabled ? "border-primary bg-blush-2 font-medium text-foreground hover:bg-blush-2" : "border-border text-muted-foreground hover:bg-blush"
                 }`}
               >
+                {s.enabled && <Check aria-hidden />}
                 {s.enabled ? "Activă" : "Ascunsă"}
               </Button>
             </div>

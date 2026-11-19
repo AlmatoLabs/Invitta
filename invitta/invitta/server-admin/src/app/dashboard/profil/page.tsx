@@ -50,7 +50,7 @@ export default function Profile() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
-      <p className="eyebrow text-liliac-600">Contul tău</p>
+      <p className="eyebrow">Contul tău</p>
       <h1 className="mt-3 font-serif text-5xl">Profilul meu</h1>
 
       <form onSubmit={save} className="mt-12 space-y-6">
@@ -98,7 +98,7 @@ export default function Profile() {
             <AlertDescription>{pwMsg}</AlertDescription>
           </Alert>
         )}
-        <Button type="submit" variant="outline" size="lg" className="border-foreground">Schimbă parola</Button>
+        <Button type="submit" variant="outline" size="lg">Schimbă parola</Button>
       </form>
     </div>
   );

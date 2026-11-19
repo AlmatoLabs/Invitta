@@ -20,12 +20,12 @@ const INVITE_ONLY: string[] = ["/dashboard/invitatie", "/dashboard/rsvp", "/dash
 function NoInviteYet() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-      <p className="eyebrow text-liliac-600">Nicio invitație încă</p>
+      <p className="eyebrow">Nicio invitație încă</p>
       <h1 className="mt-3 font-serif text-4xl">Începe prin a alege un model</h1>
       <p className="mx-auto mt-4 max-w-md text-base text-foreground">
         Editarea invitației, confirmările și mesele apar după ce alegi un model din colecție.
       </p>
-      <Link href="/modele" className="mt-8 inline-flex rounded-[4px] bg-primary px-5 py-2.5 text-sm text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">
+      <Link href="/modele" className="mt-8 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">
         Alege un model
       </Link>
     </div>
@@ -46,18 +46,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-30">
         <div className="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between">
-          <Link href="/" className="font-serif text-2xl">Invitta<span className="text-liliac-600"> · </span>RSVP</Link>
-          <nav className="hidden md:flex items-center gap-8 text-sm">
+          <Link href="/" className="font-serif text-2xl">Invitta<span className="text-editorial"> · RSVP</span></Link>
+          <nav className="hidden md:flex items-center gap-2 text-sm">
             {visible.map((n) => {
               const active = pathname === n.to;
               return (
                 <Link
                   key={n.to}
                   href={n.to}
-                  className={`transition-colors ${active ? "text-foreground" : "text-muted-foreground hover:text-liliac-600"}`}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded-full border px-4 py-1.5 transition-colors duration-150 ${active ? "border-primary bg-blush-2 font-medium text-foreground" : "border-transparent text-muted-foreground hover:bg-blush hover:text-link"}`}
                 >
                   {n.label}
-                  {active && <span className="block mt-1 h-px w-full bg-liliac-600" />}
                 </Link>
               );
             })}
@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {visible.map((n) => {
             const active = pathname === n.to;
             return (
-              <Link key={n.to} href={n.to} className={`shrink-0 rounded-[4px] px-4 py-2 ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground transition-colors duration-150 hover:bg-liliac-50 hover:text-liliac-700"}`}>
+              <Link key={n.to} href={n.to} aria-current={active ? "page" : undefined} className={`shrink-0 rounded-full border px-4 py-2 transition-colors duration-150 ${active ? "border-primary bg-blush-2 font-medium text-foreground" : "border-transparent text-muted-foreground hover:bg-blush hover:text-link"}`}>
                 {n.label}
               </Link>
             );

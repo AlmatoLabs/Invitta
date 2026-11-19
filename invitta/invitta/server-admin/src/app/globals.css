@@ -50,42 +50,42 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Brand palette (FOGRA39 → sRGB) */
-  --color-liliac-50: var(--liliac-50);
-  --color-liliac-100: var(--liliac-100);
-  --color-liliac: var(--liliac);
-  --color-liliac-600: var(--liliac-600);
-  --color-liliac-700: var(--liliac-700);
-  --color-liliac-900: var(--liliac-900);
-  --color-maple-50: var(--maple-50);
-  --color-maple-100: var(--maple-100);
-  --color-maple: var(--maple);
-  --color-maple-700: var(--maple-700);
-  --color-maple-900: var(--maple-900);
-  --color-cobalt-50: var(--cobalt-50);
-  --color-cobalt-100: var(--cobalt-100);
-  --color-cobalt: var(--cobalt);
-  --color-cobalt-700: var(--cobalt-700);
-  --color-cobalt-900: var(--cobalt-900);
-  --color-eugenia-50: var(--eugenia-50);
-  --color-eugenia-100: var(--eugenia-100);
-  --color-eugenia: var(--eugenia);
-  --color-eugenia-600: var(--eugenia-600);
-  --color-eugenia-900: var(--eugenia-900);
+  /* „Vișiniu pudrat” palette */
   --color-paper: var(--paper);
+  --color-blush: var(--blush);
+  --color-blush-2: var(--blush-2);
+  --color-line: var(--line);
   --color-ink: var(--ink);
   --color-ink-secondary: var(--ink-secondary);
-  --color-line: var(--line);
+  --color-wine: var(--wine);
+  --color-wine-hover: var(--wine-hover);
+  --color-rose: var(--rose);
+  --color-champagne-bg: var(--champagne-bg);
+  --color-champagne: var(--champagne);
+  --color-champagne-text: var(--champagne-text);
+  --color-sage-bg: var(--sage-bg);
+  --color-sage: var(--sage);
+  --color-sage-text: var(--sage-text);
+  --color-neutral-soft: var(--neutral-soft);
+  --color-neutral-bar: var(--neutral-bar);
 
-  /* RSVP status + charts */
+  /* Semantic text roles */
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-editorial: var(--editorial);
+  --color-display-accent: var(--display-accent);
+  --color-error-bg: var(--error-bg);
+
+  /* RSVP status: text / background / bar */
   --color-success: var(--success);
   --color-success-bg: var(--success-bg);
+  --color-success-bar: var(--success-bar);
   --color-warning: var(--warning);
   --color-warning-bg: var(--warning-bg);
-  --color-danger-bg: var(--danger-bg);
-  --color-chart-accepted: var(--chart-accepted);
-  --color-chart-pending: var(--chart-pending);
-  --color-chart-declined: var(--chart-declined);
+  --color-warning-bar: var(--warning-bar);
+  --color-declined: var(--declined);
+  --color-declined-bg: var(--declined-bg);
+  --color-declined-bar: var(--declined-bar);
 
   /* Invitation templates (see :root) */
   --color-tpl-ivory: var(--tpl-ivory);
@@ -109,43 +109,35 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --shadow-soft: 0 1px 2px rgb(46 34 48 / 0.04);
-  --shadow-luxe: 0 20px 40px -28px rgb(46 34 48 / 0.2);
+  --shadow-soft: 0 1px 2px rgb(58 42 42 / 0.04);
+  --shadow-luxe: 0 20px 40px -28px rgb(58 42 42 / 0.18);
 }
 
 :root {
   --radius: 0.375rem;
   --collection-divider: oklch(0.78 0 0);
 
-  /* Brand palette — 4 brand colours converted from CMYK (FOGRA39).
-     The mid tones (liliac, maple, cobalt, eugenia) are decorative only
-     (lines, dots, illustrations, large fills). Never use them for text:
-     use the 600/700/900 shades instead. */
-  --liliac-50: #F6EEF4;
-  --liliac-100: #EAD7E5;
-  --liliac: #C18BB4;
-  --liliac-600: #7F4D73;
-  --liliac-700: #653E5C;
-  --liliac-900: #422E3D;
-  --maple-50: #F9F4EC;
-  --maple-100: #F0E4D1;
-  --maple: #CFAA71;
-  --maple-700: #725831;
-  --maple-900: #493C27;
-  --cobalt-50: #EEF6EF;
-  --cobalt-100: #D6EBD9;
-  --cobalt: #A5D2AC;
-  --cobalt-700: #3C6743;
-  --cobalt-900: #2D4330;
-  --eugenia-50: #FBEAE9;
-  --eugenia-100: #F5CCCB;
-  --eugenia: #E15E5C;
-  --eugenia-600: #9E2F2E;
-  --eugenia-900: #4F2221;
-  --paper: #FBF8F9;
-  --ink: #2E2230;
-  --ink-secondary: #5C4F5A; /* 7.3:1 on paper — metadata only */
-  --line: #E8E0E6;
+  /* „Vișiniu pudrat” — luminous, airy wedding palette.
+     --wine is an ACTION accent only (buttons, links, focus, selection border).
+     --champagne, --sage, --neutral-bar are DECOR only (lines, bars, dots) —
+     never text. --rose (= --display-accent) is text only at ≥24px. */
+  --paper: #FDFAF9;
+  --blush: #F8EDEB;
+  --blush-2: #F3E1DE;
+  --line: #EFE4E2;
+  --ink: #3A2A2A;
+  --ink-secondary: #6E5B5A;
+  --wine: #9E2F2E;
+  --wine-hover: #842726;
+  --rose: #B5706D;
+  --champagne-bg: #FAF5EC;
+  --champagne: #C9A97A;
+  --champagne-text: #7E6238;
+  --sage-bg: #F1F3EA;
+  --sage: #A3B18A;
+  --sage-text: #56633F;
+  --neutral-soft: #F3EEED;
+  --neutral-bar: #DCCFCD;
 
   /* Invitation templates — deliberately separate from the app theme.
      Template components (demo-view, InvitationRenderer, InvitationPreview,
@@ -169,47 +161,53 @@
   --popover: #FFFFFF;
   --popover-foreground: var(--ink);
 
-  /* --liliac-900 is reserved for dark bands (e.g. "Momentul vostru", Premium card). */
-  --primary: var(--liliac-600);
+  /* At most ONE filled primary button per screen/section. */
+  --primary: var(--wine);
   --primary-foreground: #FFFFFF;
-  --primary-hover: var(--liliac-700);
+  --primary-hover: var(--wine-hover);
 
-  --secondary: var(--liliac-50);
-  --secondary-foreground: var(--liliac-900);
+  --secondary: var(--blush);
+  --secondary-foreground: var(--ink);
 
-  --muted: var(--liliac-50);
+  --muted: var(--neutral-soft);
   --muted-foreground: var(--ink-secondary);
 
-  --accent: var(--liliac-100);
-  --accent-foreground: var(--liliac-900);
+  --accent: var(--blush);
+  --accent-foreground: var(--ink);
 
-  --destructive: var(--eugenia-600);
+  --destructive: var(--wine);
   --destructive-foreground: #FFFFFF;
-  --destructive-hover: #842726; /* eugenia-600 darkened ~15%: hover without opacity, not near-black */
+  --destructive-hover: var(--wine-hover);
+  --error-bg: var(--blush);
 
   --border: var(--line);
   --input: var(--line);
-  --ring: var(--liliac-600);
+  --ring: var(--wine);
 
-  /* RSVP status: Confirmat / În așteptare / Refuzat (text = --destructive) */
-  --success: var(--cobalt-700);
-  --success-bg: var(--cobalt-50);
-  --warning: var(--maple-700);
-  --warning-bg: var(--maple-50);
-  --danger-bg: var(--eugenia-50);
+  --link: var(--wine);
+  --link-hover: var(--wine-hover);
+  --editorial: var(--champagne-text); /* small decorative text: eyebrows, step numbers */
+  --display-accent: var(--rose);      /* italic accent words, ONLY at ≥24px */
 
-  --chart-accepted: var(--cobalt);
-  --chart-pending: var(--maple);
-  --chart-declined: var(--eugenia);
+  /* RSVP status: Confirmat / În așteptare / Nu vin */
+  --success: var(--sage-text);
+  --success-bg: var(--sage-bg);
+  --success-bar: var(--sage);
+  --warning: var(--champagne-text);
+  --warning-bg: var(--champagne-bg);
+  --warning-bar: var(--champagne);
+  --declined: var(--ink-secondary);
+  --declined-bg: var(--neutral-soft);
+  --declined-bar: var(--neutral-bar);
 
   --sidebar: var(--paper);
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--liliac-600);
+  --sidebar-primary: var(--wine);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: var(--liliac-100);
-  --sidebar-accent-foreground: var(--liliac-900);
+  --sidebar-accent: var(--blush);
+  --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--line);
-  --sidebar-ring: var(--liliac-600);
+  --sidebar-ring: var(--wine);
 }
 
 .dark {
@@ -299,14 +297,14 @@
   /* Template roots: focus ring follows the template text colour, not the app theme. */
   .tpl-scope { --focus-ring: currentColor; }
 
-  /* Section eyebrow: sentence case, Manrope 14px / 500. Colour is set by the
-     caller (text-liliac-600 on light, text-liliac-100 on dark bands). */
+  /* Section eyebrow: sentence case, Manrope 14px / 500, editorial colour. */
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 0.875rem;
     line-height: 1.4;
     font-weight: 500;
     letter-spacing: 0.01em;
+    color: var(--color-editorial);
   }
 
   .luxe-shadow { box-shadow: var(--shadow-luxe); }

@@ -17,7 +17,7 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
           <Button size="lg" onClick={reset} className="px-6">
             Reîncearcă
           </Button>
-          <Button asChild variant="outline" size="lg" className="rounded-full bg-card px-6">
+          <Button asChild variant="outline" size="lg" className="px-6">
             <Link href="/">Acasă</Link>
           </Button>
         </div>

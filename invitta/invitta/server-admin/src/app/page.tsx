@@ -48,12 +48,19 @@ const testimonials = [
 ];
 
 function Label({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <p className={`eyebrow text-liliac-600 ${className}`}>{children}</p>;
+  return <p className={`eyebrow ${className}`}>{children}</p>;
 }
 
 /* Link-buton text (Demo, Vezi toate modelele): 14px, sentence case, fără tracking. */
-const textLink = "inline-flex min-h-8 items-center gap-3 text-[14px] font-medium text-liliac-600 transition-colors duration-150 hover:text-liliac-700";
-const textLinkLine = "border-b border-liliac-600/40 pb-1 transition-colors duration-150";
+const textLink = "inline-flex min-h-8 items-center gap-3 text-[14px] font-medium text-link transition-colors duration-150 hover:text-link-hover";
+const textLinkLine = "border-b border-link/40 pb-1 transition-colors duration-150";
+
+/* Statusuri RSVP: fond -bg, text în culoarea status, bară subțire -bar. */
+const STATUS_UI = {
+  success: "border-l-[3px] border-success-bar bg-success-bg text-success",
+  warning: "border-l-[3px] border-warning-bar bg-warning-bg text-warning",
+  declined: "border-l-[3px] border-declined-bar bg-declined-bg text-declined",
+} as const;
 
 export default function Index() {
   return (
@@ -74,14 +81,14 @@ export default function Index() {
           <div className="max-w-xl animate-fade-up">
             <Label>Atelier de invitații digitale</Label>
             <h1 className="mt-8 font-serif text-5xl font-light leading-[1.1] text-foreground sm:text-6xl lg:text-[5.5rem]">
-              Povestea voastră merită o invitație <em className="text-liliac-600">pe măsură.</em>
+              Povestea voastră merită o invitație <em className="text-display-accent">pe măsură.</em>
             </h1>
-            <div className="mt-8 h-px w-16 bg-liliac" />
+            <div className="mt-8 h-px w-16 bg-champagne" />
             <p className="mt-8 max-w-sm text-lg text-foreground">
               Invitații digitale create cu eleganță. Momente speciale, împărtășite cu cei dragi.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <a href="#colectii" className="rounded-[4px] bg-primary px-8 py-4 text-base text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">
+              <a href="#colectii" className="rounded-full bg-primary px-8 py-4 text-base text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">
                 Descoperă colecțiile
               </a>
             </div>
@@ -105,7 +112,7 @@ export default function Index() {
         </div>
         <div className="mt-6">
           <Link href="/modele" className={`group/all ${textLink}`}>
-            <span className={`${textLinkLine} group-hover/all:border-liliac-700`}>
+            <span className={`${textLinkLine} group-hover/all:border-link-hover`}>
               Vezi toate modelele
             </span>
             <span aria-hidden="true" className="transition-transform duration-500 group-hover/all:translate-x-1">→</span>
@@ -127,20 +134,20 @@ export default function Index() {
               </Link>
               <figcaption className="mt-7 border-b border-border pb-10">
                 <div className="flex items-baseline justify-between gap-4">
-                  <Link href={`/invitatie/${t.slug}`} className="min-w-0 font-serif text-[28px] leading-tight text-foreground decoration-1 underline-offset-8 transition-colors duration-150 hover:text-liliac-600 group-hover:underline focus-visible:underline">{t.name}</Link>
-                  <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-liliac-600">{t.no}</span>
+                  <Link href={`/invitatie/${t.slug}`} className="min-w-0 font-serif text-[28px] leading-tight text-foreground decoration-1 underline-offset-8 transition-colors duration-150 hover:text-link group-hover:underline focus-visible:underline">{t.name}</Link>
+                  <span aria-hidden="true" className="shrink-0 font-serif text-3xl italic text-display-accent">{t.no}</span>
                 </div>
                 <p className="mt-3 text-sm text-muted-foreground">{t.mood}</p>
                 <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <Link href={`/invitatie/${t.slug}`} className={`group/demo ${textLink}`}>
-                    <span className={`${textLinkLine} group-hover/demo:border-liliac-700`}>
+                    <span className={`${textLinkLine} group-hover/demo:border-link-hover`}>
                       Demo
                     </span>
                     <span aria-hidden="true" className="transition-transform duration-500 group-hover/demo:translate-x-1">→</span>
                   </Link>
                   <Link
                     href={`/register?design=${t.slug}`}
-                    className="inline-flex min-h-11 items-center rounded-[4px] border border-liliac-600 px-6 py-2.5 text-[14px] font-medium text-liliac-700 transition-colors duration-150 hover:border-primary-hover hover:bg-primary-hover hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                    className="inline-flex min-h-11 items-center rounded-full border border-primary px-6 py-2.5 text-[14px] font-medium text-primary transition-colors duration-150 hover:border-primary-hover hover:bg-blush hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                   >
                     Alege invitația
                   </Link>
@@ -156,7 +163,7 @@ export default function Index() {
       <section className="bg-secondary py-28 md:py-40">
         <div className="mx-auto max-w-5xl px-6 text-center">
           <p className="font-serif text-4xl leading-[1.15] sm:text-6xl sm:font-light">
-            Nu doar o invitație. <em className="text-liliac-600">Primul capitol</em> al zilei voastre.
+            Nu doar o invitație. <em className="text-display-accent">Primul capitol</em> al zilei voastre.
           </p>
         </div>
       </section>
@@ -170,7 +177,7 @@ export default function Index() {
         <div className="mt-16 grid gap-12 md:grid-cols-3">
           {steps.map((s) => (
             <div key={s.n} className="border-t border-border pt-6">
-              <span className="font-serif text-3xl italic text-liliac-600">{s.n}</span>
+              <span className="font-serif text-3xl italic text-editorial">{s.n}</span>
               <h3 className="mt-4 font-serif text-2xl">{s.title}</h3>
               <p className="mt-3 text-base text-foreground">{s.desc}</p>
             </div>
@@ -226,7 +233,7 @@ export default function Index() {
           <p className="mt-6 max-w-md text-base text-foreground">
             Numele, data, locurile, povestea și fotografiile voastre. Schimbați orice și vedeți invitația prinzând viață în timp real.
           </p>
-          <Link href="/register" className="mt-8 inline-block border-b border-foreground/40 pb-1 text-base text-foreground transition-colors duration-150 hover:border-liliac-600 hover:text-liliac-600">
+          <Link href="/register" className="mt-8 inline-block border-b border-foreground/40 pb-1 text-base text-foreground transition-colors duration-150 hover:border-link hover:text-link">
             Începe personalizarea
           </Link>
         </div>
@@ -243,17 +250,17 @@ export default function Index() {
       </section>
 
       {/* STORY 2 — SHARE (DARK) */}
-      <section className="bg-liliac-900 py-28 text-liliac-50 md:py-36">
+      <section className="bg-blush py-28 text-foreground md:py-36">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
           <div className="order-2 lg:order-1">
-            <p className="eyebrow text-liliac-100">02 — Împărtășit</p>
-            <h2 className="mt-5 font-serif text-4xl leading-[1.12] sm:text-5xl sm:font-light">Momentul vostru, <em className="text-liliac">în buzunarul fiecăruia</em>.</h2>
-            <p className="mt-6 max-w-md text-base text-liliac-50">
+            <p className="eyebrow">02 — Împărtășit</p>
+            <h2 className="mt-5 font-serif text-4xl leading-[1.12] sm:text-5xl sm:font-light">Momentul vostru, <em className="text-display-accent">în buzunarul fiecăruia</em>.</h2>
+            <p className="mt-6 max-w-md text-base text-foreground">
               Un singur link, trimis pe WhatsApp. Invitații deschid invitația pe telefon și confirmă prezența în câteva secunde.
             </p>
             <Link
               href="/invitatie/ioana-andrei"
-              className="mt-8 inline-block border-b border-liliac-100/50 pb-1 text-base text-liliac-50 transition-colors duration-150 hover:border-liliac-100 hover:text-liliac-100 focus-visible:outline-liliac-100"
+              className="mt-8 inline-block border-b border-foreground/40 pb-1 text-base text-foreground transition-colors duration-150 hover:border-link hover:text-link"
             >
               Vezi o invitație demo
             </Link>
@@ -289,15 +296,15 @@ export default function Index() {
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-[4px] bg-card p-5 text-sm">
               <p className="text-xs font-medium text-muted-foreground">Invitați</p>
-              {([["Maria Popescu", "Confirmat", "bg-success-bg text-success"], ["Ion Ionescu", "În așteptare", "bg-warning-bg text-warning"], ["Elena Dima", "Confirmat", "bg-success-bg text-success"], ["Radu Stan", "Refuzat", "bg-danger-bg text-destructive"]] as const).map(([n, s, cls]) => (
+              {([["Maria Popescu", "Confirmat", "success"], ["Ion Ionescu", "În așteptare", "warning"], ["Elena Dima", "Confirmat", "success"], ["Radu Stan", "Nu vin", "declined"]] as const).map(([n, s, st]) => (
                 <div key={n} className="flex items-center justify-between gap-2 border-b border-border py-3 last:border-0">
                   <span>{n}</span>
-                  <span className={`rounded-[4px] px-2 py-0.5 text-xs ${cls}`}>{s}</span>
+                  <span className={`rounded-[4px] px-2 py-0.5 text-xs font-medium ${STATUS_UI[st]}`}>{s}</span>
                 </div>
               ))}
             </div>
             <div className="flex flex-col items-center justify-center rounded-[4px] bg-card p-5">
-              <div className="relative flex h-36 w-36 items-center justify-center rounded-full border border-liliac/60">
+              <div className="relative flex h-36 w-36 items-center justify-center rounded-full border border-neutral-bar">
                 <div className="text-center">
                   <p className="font-serif text-[22px]">Masa 1</p>
                   <p className="text-xs text-muted-foreground">8 / 10</p>
@@ -305,7 +312,7 @@ export default function Index() {
                 {Array.from({ length: 10 }).map((_, i) => (
                   <span
                     key={i}
-                    className={`absolute h-3 w-3 rounded-full ${i < 8 ? "bg-liliac-600" : "border border-liliac bg-card"}`}
+                    className={`absolute h-3 w-3 rounded-full ${i < 8 ? "bg-champagne" : "border border-neutral-bar bg-card"}`}
                     style={{ transform: `rotate(${i * 36}deg) translateY(-84px)` }}
                   />
                 ))}
@@ -343,32 +350,32 @@ export default function Index() {
             <h2 className="mt-5 font-serif text-4xl sm:text-5xl sm:font-light">Alege pachetul potrivit</h2>
             <p className="mt-4 text-base text-foreground">Plată unică. Fără abonament.</p>
           </div>
-          <div className="mt-16 grid gap-px overflow-hidden rounded-[4px] border border-border bg-border md:grid-cols-3">
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
             {PLANS.map((p) => (
-              <div key={p.slug} className={`flex flex-col p-10 ${p.featured ? "bg-liliac-900 text-liliac-50" : "bg-card"}`}>
+              <div key={p.slug} className={`flex flex-col rounded-[4px] border bg-card p-8 sm:p-10 ${p.featured ? "border-wine" : "border-border"}`}>
                 {/* Rând de înălțime fixă pe toate cardurile, ca titlurile să rămână aliniate. */}
                 <div className="mb-3 flex h-6 items-center">
                   {p.featured && (
-                    <span className="rounded-full border border-liliac-100/60 px-2.5 py-0.5 text-xs font-medium text-liliac-100">Recomandat</span>
+                    <span className="rounded-full bg-blush px-2.5 py-0.5 text-xs font-medium text-wine">Recomandat</span>
                   )}
                 </div>
-                <h3 className={`font-serif text-3xl ${p.featured ? "text-liliac" : ""}`}>{p.name}</h3>
-                <p className={`mt-1 text-base ${p.featured ? "text-liliac-50" : "text-foreground"}`}>{p.desc}</p>
+                <h3 className="font-serif text-3xl">{p.name}</h3>
+                <p className="mt-1 text-base text-foreground">{p.desc}</p>
                 <p className="mt-8 font-serif text-5xl font-light">€{p.price}</p>
                 <ul className="mt-8 flex-1 space-y-3 text-base">
                   {p.includes && (
-                    <li className={p.featured ? "text-liliac-100" : "text-foreground"}>Tot din {p.includes}, plus:</li>
+                    <li className="text-foreground">Tot din {p.includes}, plus:</li>
                   )}
                   {p.features.map((f) => (
                     <li key={f} className="flex gap-3">
-                      <span className="mt-2 h-px w-3 shrink-0 bg-liliac" />
+                      <span className="mt-3 h-px w-3 shrink-0 bg-champagne" />
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href={`/register?plan=${p.slug}`}
-                  className={`mt-10 block rounded-[4px] border px-6 py-3.5 text-center text-base transition-colors duration-150 ${p.featured ? "border-transparent bg-liliac-50 text-liliac-900 hover:bg-liliac-100 focus-visible:outline-liliac-100" : "border-liliac-600 text-liliac-700 hover:border-liliac-700 hover:bg-liliac-50"}`}
+                  className={`mt-10 block rounded-full border px-6 py-3.5 text-center text-base transition-colors duration-150 ${p.featured ? "border-primary bg-primary text-primary-foreground hover:border-primary-hover hover:bg-primary-hover" : "border-primary text-primary hover:border-primary-hover hover:bg-blush hover:text-primary-hover"}`}
                 >
                   Alege {p.name}
                 </Link>
@@ -380,8 +387,8 @@ export default function Index() {
 
       {/* CLOSING */}
       <section className="mx-auto max-w-4xl px-6 py-32 text-center">
-        <h2 className="font-serif text-4xl leading-[1.12] sm:text-6xl sm:font-light">Totul începe cu <em className="text-liliac-600">o invitație.</em></h2>
-        <Link href="/register" className="mt-12 inline-block rounded-[4px] bg-primary px-8 py-4 text-base text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">
+        <h2 className="font-serif text-4xl leading-[1.12] sm:text-6xl sm:font-light">Totul începe cu <em className="text-display-accent">o invitație.</em></h2>
+        <Link href="/register" className="mt-12 inline-block rounded-full bg-primary px-8 py-4 text-base text-primary-foreground transition-colors duration-150 hover:bg-primary-hover">
           Creează invitația
         </Link>
       </section>
@@ -391,9 +398,9 @@ export default function Index() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
           <div className="font-serif text-2xl">Invitta · RSVP</div>
           <nav aria-label="Subsol" className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
-            <Link href="/#features" className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-liliac-600 md:min-h-8">Funcționalități</Link>
-            <Link href="/modele" className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-liliac-600 md:min-h-8">Modele</Link>
-            <Link href="/#pricing" className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-liliac-600 md:min-h-8">Prețuri</Link>
+            <Link href="/#features" className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-link md:min-h-8">Funcționalități</Link>
+            <Link href="/modele" className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-link md:min-h-8">Modele</Link>
+            <Link href="/#pricing" className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-link md:min-h-8">Prețuri</Link>
           </nav>
           <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Invitta RSVP</p>
         </div>

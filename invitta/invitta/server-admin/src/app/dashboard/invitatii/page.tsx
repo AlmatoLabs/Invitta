@@ -16,7 +16,7 @@ export default function MyInvites() {
   const couple = [c.brideFirst, c.groomFirst].filter(Boolean).join(" & ") || session?.name || "";
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
-      <p className="eyebrow text-liliac-600">Contul tău</p>
+      <p className="eyebrow">Contul tău</p>
       <h1 className="mt-3 font-serif text-5xl">Invitațiile mele</h1>
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         {!hasInvite ? (
@@ -43,8 +43,8 @@ export default function MyInvites() {
           </Card>
         )}
         {hasInvite && (
-          <Link href="/modele" className="flex min-h-[220px] flex-col items-center justify-center rounded-md border border-dashed border-border p-8 text-center transition-colors duration-150 hover:border-liliac-700 hover:bg-liliac-50">
-            <span className="font-serif text-4xl">+</span>
+          <Link href="/modele" className="flex min-h-[220px] flex-col items-center justify-center rounded-md border border-dashed border-border p-8 text-center transition-colors duration-150 hover:border-primary hover:bg-blush">
+            <span aria-hidden="true" className="font-serif text-4xl text-link">+</span>
             <span className="mt-2 text-sm">Schimbă modelul</span>
           </Link>
         )}
